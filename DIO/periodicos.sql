@@ -27,7 +27,8 @@ INSERT INTO periodicos(nome_periodicos, issn, id_editora) VALUES ('Special Issue
    ###  ERROR 1062 (23000): Duplicate entry 'IEEE' for key ###
 
    ^^ Desafio :
-       Criar Entidades  Pesquisador/Autor Artigo/Work gerar e passar relacionamento entre elas
+         Criar Entidades  Pesquisador/Autor Artigo/Work gerar e passar relacionamento entre elas, ultilizar modelo
+       conceitual de ER (fluxo-grama).
 */
 
 
