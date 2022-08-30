@@ -39,7 +39,7 @@ CREATE TABLE pesquisa(
     id INTEGER PRIMARY KEY,
     nome VARCHAR(120),
     inquiry VARCHAR(200) /*  Descrevendo pesquisa */
-)
+);
 
 /* Criando link'S entre as entidades aplicando constraint(restricao) */
 
