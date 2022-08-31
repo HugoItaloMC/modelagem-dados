@@ -34,11 +34,11 @@ ________________________________________________________________________________
 
         É a definicão do isolamento do programa (API, FRONT-END) do Banco de Dados, 
        em uma forma geral é criada 3 camadas sendo elas: Mode Conceitual se tem 
-       uma abstracão dos levantamentos de requisitos em forma de diagrama, Modelo Fisíco onde 
-       se encontra o Modelo Lógico com regras de negócios,o SGDB, métodos e o esquema do 
-       banco de dados e o Modelo View que tem a interacão como usúario ultilizando programacão 
-       (front-end e back-end). Lembrando que essa independência é implicita, tem que ser 
-       implementado de forma manual essa conexão. 
+       uma abstracão dos levantamentos de requisitos criando um Modelo Lógico em forma de diagrama,
+       Modelo Fisíco onde se encontra o SGDB, métodos e o esquema do banco de dados e como esses 
+       dados serão persistidos, e o Modelo View que tem a interacão como usúario ultilizando programacão
+       (front-end e back-end). Essas 3 camadas é uma árvore de como é representado a independência program/data. 
+        Lembrando que essa independência é implicita, tem que ser implementado de forma manual essa conexão. 
 
  - **_User View :_**
 
