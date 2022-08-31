@@ -5,7 +5,7 @@
        É a representacão de um estado, um evento, um objeto e ou um ser
 
 
- - **_Bando de Dados :_**
+ - **_Banco de Dados :_**
 
         É a persistência de dados contendo uma estrutura com regras e restricões
        pré-definidas em tabelas com atributos, relacionadas ou não.
