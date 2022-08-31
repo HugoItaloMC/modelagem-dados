@@ -18,9 +18,7 @@ CREATE TABLE editora(
     PRIMARY KEY (id)
 );
 
-/* Adicionando Dados em uma entidade : */
-INSERT INTO editora (nome_editora, pais) VALUES ('IEEE', 'EUA'), ('DataScienceAcademy', 'EUA');
-INSERT INTO periodicos(nome_periodicos, issn, id_editora) VALUES ('Special Issue', '15437609', '1');
+
 /* OBS: No caso de redundância de dados, mesmo em instâncias diferentes, será gerado um erro !!
    ###  ERROR 1062 (23000): Duplicate entry 'IEEE' for key ###
 
@@ -46,3 +44,8 @@ CREATE TABLE pesquisa(
 ALTER TABLE periodicos ADD CONSTRAINT fk_periodicos_editora FOREIGN KEY(id_editora) REFERENCES editora(id);
 ALTER TABLE editora ADD CONSTRAINT fk_editora_autor FOREIGN KEY(id_autor) REFERENCES autor(id);
 ALTER TABLE autor ADD CONSTRAINT fk_autor_pesquisa FOREIGN KEY(id_pesquisa) REFERENCES pesquisa(id);
+
+/* Adicionando Dados em uma entidade : */
+
+INSERT INTO editora (nome_editora, pais) VALUES ('IEEE', 'EUA'), ('DataScienceAcademy', 'EUA');
+INSERT INTO periodicos(nome_periodicos, issn, id_editora) VALUES ('Special Issue', '15437609', '1');
