@@ -32,14 +32,13 @@
 ___________________________________________________________________________________________
  - **_Independência program/data :_**
 
-      
-     É a definicão do isolamento do programa (API, FRONT-END) do Banco de Dados, 
-    em uma forma geral é criada 3 camadas sendo elas: Mode Conceitual se tem 
-    uma abstracão dos levantamentos de requisitos em forma de diagrama, Modelo Fisíco onde 
-    se encontra o Modelo Lógico com regras de negócios,o SGDB, métodos e o esquema do 
-    banco de dados e o Modelo View que tem a interacão como usúario ultilizando programacão 
-    (front-end e back-end). Lembrando que essa independência é implicita, tem que ser 
-    implementado de forma manual essa conexão. 
+        É a definicão do isolamento do programa (API, FRONT-END) do Banco de Dados, 
+       em uma forma geral é criada 3 camadas sendo elas: Mode Conceitual se tem 
+       uma abstracão dos levantamentos de requisitos em forma de diagrama, Modelo Fisíco onde 
+       se encontra o Modelo Lógico com regras de negócios,o SGDB, métodos e o esquema do 
+       banco de dados e o Modelo View que tem a interacão como usúario ultilizando programacão 
+       (front-end e back-end). Lembrando que essa independência é implicita, tem que ser 
+       implementado de forma manual essa conexão. 
 
  - **_User View :_**
 
@@ -51,9 +50,8 @@ ________________________________________________________________________________
 
  - **_DBA :_**
 
-
-      É o administrador do banco de dados, em sua staff inclui, Design de dados, 
-    Modelagem de Dados, e geranciar os bancos de dados no SGDB.
+        É o administrador do banco de dados, em sua staff inclui, Design de dados, 
+       Modelagem de Dados, e geranciar os bancos de dados no SGDB.
 
 
  - **_Transacões Canned :_**
@@ -64,7 +62,6 @@ ________________________________________________________________________________
  - **_Metadados :_**
 
        É a informacão da estrutura, regras, atributos de um esquema de banco de dados.    
-
 
  - **_Aplicacão de Processamento de Transacão :_** 
           
