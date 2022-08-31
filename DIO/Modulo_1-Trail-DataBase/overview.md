@@ -20,7 +20,7 @@
      isolando o programa dos dados, controlando a concorrência, back-up, recovery.
 
  
-- **_Sistema de Bando de Dados :_**
+- **_Sistema de Banco de Dados :_**
  
         É a forma de se isolar a aplicacão dos dados, tendo um gerenciamento
        otimizado do armazenamento, persistência dos dados, monitoramento.  
