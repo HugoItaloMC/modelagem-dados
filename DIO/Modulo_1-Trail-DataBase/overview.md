@@ -15,9 +15,8 @@
  ___________________________________________________________________________________________
  - **_SGDB :_**
 
-
-      É um sistema para gerenciar banco de dados, proporcionando uma boa performace
-     isolando o programa dos dados, controlando a concorrência, back-up, recovery.
+        É um sistema para gerenciar banco de dados, proporcionando uma boa performace
+       isolando o programa dos dados, controlando a concorrência, back-up, recovery.
 
  
 - **_Sistema de Banco de Dados :_**
