@@ -2,7 +2,7 @@
  ___________________________________________________________________________________________
  - **_Dados :_**
 
-       É a representacão de um estado, um evento, um objeto e ou um ser
+       É a representacão de um estado, um evento, um objeto e ou um ser, sem informacões declarativas, de uma forma crua
 
 
  - **_Banco de Dados :_**
@@ -13,7 +13,7 @@
 
 ### **SGDB, Sistema de Banco de Dados e Catálogo de BD**
  ___________________________________________________________________________________________
- - **_SGDB :_**
+ - **_SGBD :_**
 
         É um sistema para gerenciar banco de dados, proporcionando uma boa performace
        isolando o programa dos dados, controlando a concorrência, back-up, recovery.
@@ -22,7 +22,7 @@
 - **_Sistema de Banco de Dados :_**
  
         É a forma de se isolar a aplicacão dos dados, tendo um gerenciamento
-       otimizado do armazenamento, persistência dos dados, monitoramento.  
+       otimizado do armazenamento das informacões, persistência dos dados, monitoramento.  
 
  - **_Catálogo de BD :_**
  
@@ -32,13 +32,16 @@
 ___________________________________________________________________________________________
  - **_Independência program/data :_**
 
-        É a definicão do isolamento do programa (API, FRONT-END) do Banco de Dados, 
-       em uma forma geral é criada 3 camadas sendo elas: Mode Conceitual se tem 
-       uma abstracão dos levantamentos de requisitos criando um Modelo Lógico em forma de diagrama,
-       Modelo Fisíco onde se encontra o SGDB, métodos e o esquema do banco de dados e como esses 
-       dados serão persistidos, e o Modelo View que tem a interacão como usúario ultilizando programacão
-       (front-end e back-end). Essas 3 camadas é uma árvore de como é representado a independência program/data. 
-        Lembrando que essa independência é implicita, tem que ser implementado de forma manual essa conexão. 
+        É a definicão do isolamento do programa(API, DOM) do Banco de Dados, 
+       em uma forma geral é criada 3 camadas sendo elas: 
+        1-Modelo Conceitual se tem uma abstracão dos levantamentos de requisitos de um contexto(Mundo-Real/Mini-Mundo) 
+       formando a base para criar um Modelo Lógico que é similar há "classes" com atributos, 
+       modelando a forma que as informacões serão persistidas no banco de dados.
+        2-Modelo Fisíco onde se encontra o SGBD, esquema do banco de dados, aplicacão de métodos e onde esses 
+       dados serão persistidos. 
+        3- Modelo View que tem a interacão como usúario ultilizando programacão(front-end e back-end). 
+        Essas 3 camadas é uma árvore de como é representado a independência program/data. Lembrando que essa independên-
+       cia é implicita, tem que ser implementado de forma manual(programacão) essas conexão. 
 
  - **_User View :_**
 
