@@ -4,11 +4,11 @@
  
  ## Arquivos do Desafio 📁
  ##### [This Plataform Contents](https://web.dio.me)
- - [_DDL_](https://github.com/HugoItaloMC/modelagem-dados/tree/main/DIO/Modulo_1-Trail-DataBase)
- - [_DDL CONSTRAINT_]()
- - [_DML INSTÂNCIAS_]()
-- [_DQL REQUESTS_]()
-- [_EER WorkBench_]()
+ - [_DDL_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/smooth-ecommerce_DDL.sql)
+ - [_DDL CONSTRAINT_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/smooth-ecommerce_DDL_CONSTRAINT.sql)
+ - [_DML INSTÂNCIAS_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/smooth_ecommerce_DML_instancias.sql)
+- [_DQL REQUESTS_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/smooth_ecommerce_DQL_requests.sql)
+- [_EER WorkBench_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/smooth_e-commerce.png)
 ## Pastas do Curso DataBase Experience 📁
 ##### **Conteúdo do Curso em meu repositório**
   - [_DIO_](https://github.com/HugoItaloMC/modelagem-dados/tree/main/DIO)
