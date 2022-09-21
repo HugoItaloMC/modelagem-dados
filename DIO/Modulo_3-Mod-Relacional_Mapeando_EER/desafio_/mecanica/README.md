@@ -4,10 +4,10 @@
  
  ## Arquivos do Desafio 📁
  ##### [This Plataform Contents](https://web.dio.me)
- - [_DDL_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/mecanica_DDL.sql)
- - [_DDL CONSTRAINT_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/mecanica_DDL_CONSTRAINTS.sql)
- - [_DML INSTÂNCIAS_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/mecanica_DML_INSTANCIAS.sql)
-- [_DQL REQUESTS_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/mecanica_DQL_REQUESTS.sql)
+ - [_DDL_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/mecanica/mecanica_DDL.sql)
+ - [_DDL CONSTRAINT_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/mecanica/mecanica_DDL_CONSTRAINTS.sql)
+ - [_DML INSTÂNCIAS_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/mecanica/mecanica_DML_INSTANCIAS.sql)
+- [_DQL REQUESTS_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/mecanica/mecanica_DQL_REQUESTS.sql)
 - [_EER WorkBench_](https://github.com/HugoItaloMC/modelagem-dados/blob/main/DIO/Modulo_3-Mod-Relacional_Mapeando_EER/desafio_/e-commerce/mecanica_eer_overview.png)
 ## Pastas do Curso DataBase Experience 📁
 ##### **Conteúdo do Curso em meu repositório**
