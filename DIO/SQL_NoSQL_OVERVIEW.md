@@ -5,9 +5,9 @@
  ___________________________________________________________________________________________
 - **_SQL :_**
 
-        Linguagem SQL estrurar banco de dados que por sua vez nescessitam de uma estrutura rigida
-      contendo regras ACID e OLTP, fazendo com que as informacões contidas no banco de dados sejam
-      persistidas com consistência para uma boa consulta dessas informacões.
+        Linguagem SQL serve para estrurar banco de dados que por sua vez nescessitam de uma 
+      estrutura rigida contendo regras ACID e OLTP, fazendo com que as informacões contidas no banco de dados 
+      sejam persistidas com consistência para uma boa consulta dessas informacões.
 
 - **_NoSQL:_**
 
