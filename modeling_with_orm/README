@@ -1,0 +1,4 @@
+         Data modeling using ORM (Object Relational Mapping) more precisely the tool developed in Python `SqlAlchemy`
+       which maps entities from several DBMS's such as (MySQL, PostgreSql, Oracle, MongoDB, SQLite, SQLServer).
+         Remembering that to apply the use described in this package you  already  have  prior  knowledge in data
+       modeling and their respective properties
