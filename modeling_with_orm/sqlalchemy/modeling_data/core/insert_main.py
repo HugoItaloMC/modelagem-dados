@@ -134,7 +134,7 @@ def insert_notas_fiscais() -> None:
 
     with create_session() as db_handler, db_handler.begin():
        db_handler.add(NotasFiscais(id_revendedor=revendedor.id, valor=valor,
-                                   numero_serie=numero_serie, descricao=descricao))x
+                                   numero_serie=numero_serie, descricao=descricao))
 
 
 def insert_picoles() -> None:
@@ -182,12 +182,11 @@ def insert_picoles() -> None:
 if __name__ == '__main__':
 
     # 1 -- Tests Insert data `Aditivos Nutritivos` >> OK
-    #  insert_aditivos_nutritivos()
-
+    insert_aditivos_nutritivos()
     # 2 -- Tests insertt Data `Sabores` >> OK
     #insert_sabores()
 
-    # 3 -- Tests insert data `Tipos Embalagems` >> OK
+   # 3 -- Tests insert data `Tipos Embalagems` >> OK
     #insert_tipos_embalagems()
 
     # 4 -- Tests insert data `Tipos Picoles` >> OK
@@ -209,4 +208,4 @@ if __name__ == '__main__':
     #insert_notas_fiscais()
 
     # 10 -- Insert data `Picoles`
-    insert_picoles()
+    #insert_picoles()
