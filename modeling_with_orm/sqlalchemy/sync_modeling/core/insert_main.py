@@ -5,6 +5,7 @@ In this module, data will be entered individually and manually
 
 from sqlalchemy import select
 
+import asyncio
 
 # Import Handler how `sessionmaker and Session` of SQLAlchemy
 from utils.db_session import create_session
@@ -35,6 +36,7 @@ def insert_aditivos_nutritivos() -> None:
     with create_session() as db_handler, db_handler.begin():
         db_handler.add(aditivos_nutritivos)
 
+    return aditivos_nutritivos
 
 def insert_sabores() -> Sabores:
     #  Insert data in `Sabores`
@@ -182,7 +184,7 @@ def insert_picoles() -> None:
 if __name__ == '__main__':
 
     # 1 -- Tests Insert data `Aditivos Nutritivos` >> OK
-    insert_aditivos_nutritivos()
+    #insert_aditivos_nutritivos()
     # 2 -- Tests insertt Data `Sabores` >> OK
     #insert_sabores()
 
@@ -209,3 +211,4 @@ if __name__ == '__main__':
 
     # 10 -- Insert data `Picoles`
     #insert_picoles()
+    ...
