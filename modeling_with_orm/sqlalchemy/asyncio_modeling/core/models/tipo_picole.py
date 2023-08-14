@@ -4,7 +4,7 @@ from sqlalchemy import String, BigInteger, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from datetime import datetime
-from typing import Generator, Iterable
+from typing import Generator, Iterable, List
 
 from utils.model_base import Base
 
@@ -18,6 +18,12 @@ class TiposPicole(Base):
     date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True, nullable=False)
 
     name: Mapped[str] = mapped_column(String(45), unique=True, nullable=True)
+    lote: Mapped[List['Lotes']] = relationship(secondary='lote_tipo_picole',
+                                               back_populates='tipo_picole',
+                                               lazy='joined',
+                                               viewonly=True)
+
+    lote_association: Mapped[List['LoteTipoPicole']] = relationship(back_populates='tipo_picole')
 
     # Settings to relationship's
 

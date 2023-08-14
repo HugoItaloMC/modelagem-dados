@@ -1,5 +1,5 @@
 """
-Learning how to insert data into objects with SQLAlchemy `orm` Python,
+Learning to insert data into objects with SQLAlchemy `orm` Python,
 In this module, data will be entered individually and manually
 """
 
@@ -57,9 +57,9 @@ async def insert_sabores() -> Sabores:
 async def insert_tipos_embalagems() -> TiposEmbalagem:
     # Insert data in `TiposEmbalagems`
 
-    print("** Insert data in table `Tipos Embalagems` **")
+    print("***\tInsert data in table `Tipos Embalagems`\t***")
 
-    tipos_embalagem: TiposEmbalagem = TiposEmbalagem(name=input("::\tName:  "))
+    tipos_embalagem: TiposEmbalagem = TiposEmbalagem(name=input("::\tName: "))
 
     async with create_session() as db_handler:
         db_handler.add(tipos_embalagem)
@@ -73,7 +73,7 @@ async def insert_tipos_picole() -> TiposPicole:
 
     print('** Insert Data in Table `Tipos Picole` **')
 
-    tipos_picole: TiposPicole = await TiposPicole(name=input("::\tNome:  "))
+    tipos_picole: TiposPicole = TiposPicole(name=input("::\tNome:  "))
     async with create_session() as db_handler:
         db_handler.add(tipos_picole)
         await db_handler.commit()
@@ -97,8 +97,7 @@ async def insert_ingredientes() -> Ingredientes:
 async def insert_conservantes() -> Conservantes:
     # insert data in Table `Conservantes`
     print("Insert data in Table `Conservantes` **")
-    conservante: Conservantes = Conservantes(name=input("::\tNome:  "),
-                                                   descricao=input("::\tDescricao:  "))
+    conservante: Conservantes = Conservantes(name=input("::\tNome:  "), descricao=input("::\tDescricao:  "))
     async with create_session() as db_handler:
         db_handler.add(conservante)
         await db_handler.commit()
@@ -125,9 +124,8 @@ async def insert_lotes() -> Lotes:
     print("Insert Data in Tables `Lotes` **")
 
     async with create_session() as db_handler:
-        tipo_picole: Coroutine[TiposPicole] = db_handler.execute(select(TiposPicole)
-                                                                    .where(TiposPicole.id == int(input(
-                                                                        "::\tInforme ID do tipo de picole do Lote: "))))
+        tipo_picole = await db_handler.scalar(select(TiposPicole).where(TiposPicole.id == int(input("::\tID Tipo Picole: "))))
+
         lote: Lotes = Lotes(id_tipos_picole=tipo_picole.id,
                             quantidade=int(input("\n::\tQuantidade:  ")))
         db_handler.add(lote)
@@ -139,13 +137,15 @@ async def insert_notas_fiscais() -> NotasFiscais:
     # Insert data in table `Notas Fiscais`
     print("** Insert data in Table `Notas Fiscais` **")
     # Para teste vamos cadastrar um novo revendedor dentro deste método
-    revendedor: Coroutine[Revendedores] = await insert_revendedores()
-    nota_fiscal: NotasFiscais = NotasFiscais(id_revendedor=revendedor.id, valor=input("::\tValor :"),
+
+    async with create_session() as db_handler:
+        revendedor = await db_handler.scalar(select(Revendedores).where(Revendedores.id == int(input("::\tID Revendedor: "))))
+
+        nota_fiscal: NotasFiscais = NotasFiscais(id_revendedor=revendedor.id, valor=input("::\tValor :"),
                                                    numero_serie=input("::\tNumero de Serie:  "),
                                                    descricao=input("::\tDescricao:  "))
 
-    async with create_session() as db_handler:
-        lote = db_handler.execute(select(Lotes).where(Lotes.id == int(input("::\tID Lote: "))))
+        lote = await db_handler.scalar(select(Lotes).where(Lotes.id == int(input("::\tID Lote: "))))
         nota_fiscal.lote_association.append(LotesNotasFiscais(lote=lote))
         db_handler.add(nota_fiscal)
         await db_handler.commit()
@@ -155,51 +155,48 @@ async def insert_notas_fiscais() -> NotasFiscais:
 async def insert_picoles() -> Picoles:
     # Insert data in `Picole`
 
-    print("** Cadastrando Picoles **")
-    ingrediente: Coroutine[Ingredientes] = await insert_ingredientes()
+    print("***\tCadastrando Picoles\t***")
 
-    try:
-        async with create_session() as db_handler:
-            id_sabor: Coroutine[Sabores] = db_handler.execute(select(Sabores).where(Sabores.id == int(input("::\tID Sabor: "))))
+    async with create_session() as db_handler:
+        try:
+            ingrediente = await db_handler.scalar(select(Ingredientes).where(Ingredientes.id == int(input("::\tID Ingrediente: "))))
 
-            id_tipo_picole: Coroutine[TiposPicole] = db_handler.execute(select(TiposPicole).where(TiposPicole.id == int(input("::\tID Sabor: "))))
+            conservante = await db_handler.scalar(select(Conservantes).where(Conservantes.id == int(input("::\tID Conservante: "))))
 
-            id_tipo_embalagem: Coroutine[TiposEmbalagem] = db_handler.execute(select(TiposPicole).where(TiposEmbalagem.id == int(input("::\tID Sabor: "))))
+            aditivo_nutritivo = await db_handler.scalar(select(AditivoNutritivo).where(AditivoNutritivo.id == int(input("::\tID Aditivo Nutritivo: "))))
 
-            picole: Picoles = Picoles(valor=float(input("::\tValor:  ")),
-                                      id_sabor=id_sabor,
-                                      id_tipo_embalagem=id_tipo_embalagem,
-                                      id_tipos_picole=id_tipo_picole)
+            id_sabor = await db_handler.scalar(select(Sabores).where(Sabores.id == int(input("::\tID Sabor: "))))
 
-            db_handler.add(picole)
-            await db_handler.commit()
-            await db_handler.refresh(picole)
+            id_tipo_picole = await db_handler.scalar(select(TiposPicole).where(TiposPicole.id == int(input("::\tID Tipo Picole: "))))
 
-            return picole
+            id_tipo_embalagem = await db_handler.scalar(select(TiposEmbalagem).where(TiposEmbalagem.id == int(input("::\tID Tipo Embalagemr: "))))
 
-    except Exception as err:
-
-        while op := input("**\tATIVOS INEXISTENTES\t**\ngostaria de cadastrar novos ativos?\n[Y/N]\n::\t".lower()) != 'n':
+        except Exception:
 
             sabor: Coroutine[Sabores] = await insert_sabores()
             tipo_embalagem: Coroutine[TiposEmbalagem] = await insert_tipos_embalagems()
             tipos_picoles: Coroutine[TiposPicole] = await insert_tipos_picole()
 
-            async with create_session() as db_handler:
-                picole: Picoles = Picoles(valor=input("::\tValor:  "),
-                                            id_sabor=sabor.id,
-                                            id_tipo_embalagem=tipo_embalagem.id,
-                                            id_tipos_picole=tipos_picoles.id)
+            picole: Picoles = Picoles(id_sabor=sabor.id,
+                                      id_tipo_picole=tipos_picoles.id,
+                                      tipo_embalagem=tipo_embalagem.id)
+            db_handler.add(picole)
 
-                picole.aditivo_nutritivo_association.append(AditivoNutritivoPicoles(aditivos_nutritivos=aditivo_nutritivo))
-                picole.conservantes_association.append(ConservantesPicoles(conservantes=conservante))
-                picole.ingredientes_association.append(IngredientesPicoles(ingredientes=ingrediente))
-                db_handler.add(picole)
+        else:
+            picole: Picoles = Picoles(valor=float(input("::\tValor:  ")),
+                                      id_sabor=id_sabor,
+                                      id_tipo_embalagem=id_tipo_picole,
+                                      id_tipos_picole=id_tipo_embalagem)
 
-                await db_handler.commit()
-                await db_handler.refresh(picole)
+            picole.aditivo_nutritivo_association.append(AditivoNutritivoPicoles(aditivos_nutritivos=aditivo_nutritivo))
+            picole.conservantes_association.append(ConservantesPicoles(conservantes=conservante))
+            picole.ingredientes_association.append(IngredientesPicoles(ingredientes=ingrediente))
+            db_handler.add(picole)
 
-                return picole
+        finally:
+            await db_handler.commit()
+            await db_handler.refresh(picole)
+            return picole
 
 
 if __name__ == '__main__':
@@ -229,7 +226,7 @@ if __name__ == '__main__':
     #asyncio.run(insert_lotes())
 
     # 9 -- Tests Async Insert data `Notas Fiscais`
-    asyncio.run(insert_notas_fiscais())
+    #asyncio.run(insert_notas_fiscais())
 
     # 10 -- Tests Async Insert data `Picoles`
-    #asyncio.run(insert_picoles())
+    asyncio.run(insert_picoles())

@@ -1,8 +1,9 @@
 from sqlalchemy.orm import sessionmaker
 
-# Import Class to engines and sessoins assyn from SqlAlchemy
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
-
+# Import Class to engines and sessions async from SqlAlchemy
+from sqlalchemy.ext.asyncio import (AsyncEngine,
+                                    AsyncSession,
+                                    create_async_engine)
 
 from typing import Optional
 from pathlib import Path
@@ -26,13 +27,13 @@ def create_engine(sqlite: bool = False) -> AsyncEngine:
                       exist_ok=True)  # If exists don't create
 
         #  Create Engine
-        str_engine = f"sqlite+aiosqlite:///{file_db}"
-        __engine = create_async_engine(url=str_engine,
-                                       echo=False,
-                                       connect_args={"check_same_thread"})
+        __engine = create_async_engine(url=f"sqlite+aiosqlite:///{file_db}",  # String engine
+                                       echo=False,  # Don´t output LOGs
+                                       connect_args={"check_same_thread": False})  # SQLite not support thread
 
     else:  # Settings to `PostgreSql`
-        __engine = create_async_engine(url="postgresql+asyncpg://postgres:Acesso93#@localhost:5432", echo=False)
+        __engine = create_async_engine(url="postgresql+asyncpg://postgres:Acesso93#@localhost:5432",
+                                       echo=False)
 
     return __engine
 
@@ -52,8 +53,8 @@ def create_session() -> AsyncSession:
     return session
 
 
-async def create_tables() -> ...:
-    #  To behaviours `assyncio` create functions async where content an by `await` over the statements manager
+async def create_tables() -> None:
+    #  To behaviours `async` create functions async where content a by `await` over the statements manager
 
     global __engine
     if not __engine:
@@ -61,10 +62,10 @@ async def create_tables() -> ...:
         create_engine()
 
     import __all_models
-    async with __engine.begin() as conn:
+    async with __engine.connect() as conn:
         # Statement manager async
-        await conn.run(Base.metadata.drop_all(__engine))  # By the send
-        await conn.run(Base.metadata.create_all(__engine))  # By the send
+        await conn.run_sync(Base.metadata.drop_all(__engine))  # To send
+        await conn.run_sync(Base.metadata.create_all(__engine))  # To send
 
 
 if __name__ == '__main__':

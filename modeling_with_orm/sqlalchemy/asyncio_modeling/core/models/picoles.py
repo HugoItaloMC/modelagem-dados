@@ -1,10 +1,9 @@
-
 from sqlalchemy import Integer, BigInteger, DateTime, DECIMAL, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
 import json
-from typing import Iterable, List, Optional
+from typing import Iterable, List, Optional, Any, Dict
 
 from utils.model_base import Base
 from models.weak_tables import (AditivoNutritivoPicoles, IngredientesPicoles, ConservantesPicoles)
@@ -25,7 +24,7 @@ class Picoles(Base):
 
     date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
 
-    valor: Mapped[str] = mapped_column(DECIMAL(8, 2), nullable=False)
+    valor: Mapped[Any[DECIMAL | float]] = mapped_column(DECIMAL(8, 2), nullable=False)
 
     # Settings to relationship's >>
     # Relation `Sabores`
@@ -71,7 +70,7 @@ class Picoles(Base):
             "date_create": "%s" % self.date_create, "id": "%d" % int(self.id), "cnpj": "%s" % self.cnpj,
             "razao_social": "%s" % self.razao_social, "contato": "%s" % self.contato}
 
-    def __str__(self):
+    def __str__(self) -> Any[str | Dict]:
         # Is String object from json
         return json.dumps(dict(self), ensure_ascii=False)
 

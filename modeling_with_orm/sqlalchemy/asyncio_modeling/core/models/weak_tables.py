@@ -4,8 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List
 
 from utils.model_base import Base
-from models.notas_fiscais import NotasFiscais
-from models.lotes import Lotes
+
 # Weak Tables of `N=N` relations from `Picoles`
 
 
@@ -68,3 +67,21 @@ class LotesNotasFiscais(Base):
 
     lote: Mapped['Lotes'] = relationship(back_populates='nota_fiscal_association')
     nota_fiscal: Mapped['NotasFiscais'] = relationship(back_populates='lote_association')
+
+
+class LoteTipoPicole(Base):
+
+    __tablename__: str = 'lote_tipo_picole'
+
+    id_tipo_picole: Mapped[int] = mapped_column('id_tipo_picole', BigInteger,
+                                                ForeignKey('tipos_picole.id'),
+                                                primary_key=True,
+                                                nullable=False)
+
+    id_lote: Mapped[int] = mapped_column('id_lote', BigInteger,
+                                         ForeignKey('lotes.id'),
+                                         primary_key=True,
+                                         nullable=False)
+
+    lote: Mapped['Lotes'] = relationship(back_populates='tipo_picole_association')
+    tipo_picole: Mapped['TiposPicole'] = relationship(back_populates='lote_association')

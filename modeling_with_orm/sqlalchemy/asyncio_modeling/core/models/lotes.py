@@ -20,12 +20,19 @@ class Lotes(Base):
     date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
 
     quantidade: Mapped[str] = mapped_column(Integer, nullable=True)
+
     # Settings relationship
-    id_tipos_picole: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_picole.id'))
+    id_tipos_picole: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_picole.id'), primary_key=True)
 
-    tipo_picole: Mapped['TiposPicole'] = relationship('TiposPicole', lazy='joined')
+    tipo_picole: Mapped[List['TiposPicole']] = relationship(secondary='lote_tipo_picole',
+                                                            back_populates='lote',
+                                                            lazy='joined',
+                                                            viewonly=True)
 
-    notas_fiscais: Mapped[List['NotasFiscais']] = relationship(secondary='lotes_notas_fiscais', back_populates='lote',
+    tipo_picole_association: Mapped[List['LoteTipoPicole']] = relationship(back_populates='lote')
+
+    notas_fiscais: Mapped[List['NotasFiscais']] = relationship(secondary='lotes_notas_fiscais',
+                                                               back_populates='lote',
                                                                lazy='joined', viewonly=True)
 
     nota_fiscal_association: Mapped[List['LotesNotasFiscais']] = relationship(back_populates='lote')

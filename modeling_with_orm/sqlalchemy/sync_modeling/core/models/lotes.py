@@ -4,7 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
 import json
-from typing import Iterable, List, Generator
+from typing import Iterable, List
 
 from utils.model_base import Base
 from utils.helper import data_para_string
@@ -23,10 +23,17 @@ class Lotes(Base):
     # Settings relationship
     id_tipos_picole: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_picole.id'))
 
-    tipo_picole: Mapped['TiposPicole'] = relationship('TiposPicole', lazy='joined')
+    tipo_picole: Mapped[List['TiposPicole']] = relationship(secondary='lote_tipo_picole',
+                                                            back_populates='lote',
+                                                            lazy='joined',
+                                                            viewonly=True)
 
-    notas_fiscais: Mapped[List['NotasFiscais']] = relationship(secondary='lotes_notas_fiscais', back_populates='lote',
-                                                               lazy='joined', viewonly=True)
+    tipo_picole_association: Mapped[List['LoteTipoPicole']] = relationship(back_populates='lote')
+
+    notas_fiscais: Mapped[List['NotasFiscais']] = relationship(secondary='lotes_notas_fiscais',
+                                                               back_populates='lote',
+                                                               lazy='joined',
+                                                               viewonly=True)
 
     nota_fiscal_association: Mapped[List['LotesNotasFiscais']] = relationship(back_populates='lote')
 
