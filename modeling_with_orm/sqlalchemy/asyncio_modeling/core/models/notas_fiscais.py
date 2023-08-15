@@ -8,6 +8,7 @@ from typing import Iterable, List, Generator
 from utils.model_base import Base
 from utils.helper import data_para_string
 from models.revendedores import Revendedores
+from models.lotes import Lotes
 
 
 class NotasFiscais(Base):
@@ -18,7 +19,7 @@ class NotasFiscais(Base):
 
     date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
 
-    valor: Mapped[str] = mapped_column(DECIMAL(8, 2), nullable=False)
+    valor = mapped_column(DECIMAL(8, 2), nullable=False)
 
     numero_serie: Mapped[str] = mapped_column(String(45), nullable=False)
 
@@ -29,7 +30,7 @@ class NotasFiscais(Base):
     revendedor: Mapped['Revendedores'] = relationship('Revendedores', backref='revendedores', lazy='joined')
 
     lote: Mapped[List['Lotes']] = relationship(secondary='lotes_notas_fiscais', back_populates='notas_fiscais',
-                                               lazy='joined', viewonly=True)
+                                               lazy='dynamic', viewonly=True)
 
     lote_association: Mapped[List['LotesNotasFiscais']] = relationship(back_populates='nota_fiscal')
 

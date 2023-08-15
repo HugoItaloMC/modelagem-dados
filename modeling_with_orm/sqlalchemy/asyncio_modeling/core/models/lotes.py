@@ -15,7 +15,7 @@ class Lotes(Base):
 
     __tablename__: str = "lotes"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, unique=True)
 
     date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
 
@@ -23,13 +23,6 @@ class Lotes(Base):
 
     # Settings relationship
     id_tipos_picole: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_picole.id'), primary_key=True)
-
-    tipo_picole: Mapped[List['TiposPicole']] = relationship(secondary='lote_tipo_picole',
-                                                            back_populates='lote',
-                                                            lazy='joined',
-                                                            viewonly=True)
-
-    tipo_picole_association: Mapped[List['LoteTipoPicole']] = relationship(back_populates='lote')
 
     notas_fiscais: Mapped[List['NotasFiscais']] = relationship(secondary='lotes_notas_fiscais',
                                                                back_populates='lote',

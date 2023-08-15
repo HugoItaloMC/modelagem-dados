@@ -3,7 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
 import json
-from typing import Iterable, List, Optional, Any, Dict
+from typing import Iterable, List, Optional
 
 from utils.model_base import Base
 from models.weak_tables import (AditivoNutritivoPicoles, IngredientesPicoles, ConservantesPicoles)
@@ -19,22 +19,20 @@ from models.tipos_embalagem import TiposEmbalagem
 class Picoles(Base):
 
     __tablename__: str = "picoles"
-
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, unique=True)
 
     date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
 
-    valor: Mapped[Any[DECIMAL | float]] = mapped_column(DECIMAL(8, 2), nullable=False)
+    valor = mapped_column(DECIMAL(8, 2), nullable=False)
 
     # Settings to relationship's >>
     # Relation `Sabores`
-    id_sabor: Mapped[int] = mapped_column(Integer,
-                                          ForeignKey('sabores.id'), nullable=False)
+    id_sabor: Mapped[int] = mapped_column(BigInteger, ForeignKey('sabores.id'), nullable=False, primary_key=True)
 
     sabor: Mapped['Sabores'] = relationship('Sabores', lazy='joined')
 
     # Relation `TiposEmbalagem`
-    id_tipo_embalagem: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_embalagem.id'), nullable=False)
+    id_tipo_embalagem: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_embalagem.id'), nullable=False, primary_key=True)
 
     tipos_embalagem: Mapped['TiposEmbalagem'] = relationship('TiposEmbalagem', lazy='joined')
 
@@ -70,7 +68,7 @@ class Picoles(Base):
             "date_create": "%s" % self.date_create, "id": "%d" % int(self.id), "cnpj": "%s" % self.cnpj,
             "razao_social": "%s" % self.razao_social, "contato": "%s" % self.contato}
 
-    def __str__(self) -> Any[str | Dict]:
+    def __str__(self) -> str:
         # Is String object from json
         return json.dumps(dict(self), ensure_ascii=False)
 
