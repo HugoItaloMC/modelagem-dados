@@ -12,19 +12,19 @@ from utils.helper import data_para_string
 
 class Sabores(Base):
 
-    __tablename__: str = "sabores"
+    __tablename__: str = 'sabores'
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column('id', BigInteger, autoincrement=True, primary_key=True, nullable=False)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    date_create: Mapped[datetime]  = mapped_column('date_create', DateTime, default=datetime.now, nullable=False)
 
-    sabor: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    nome: Mapped[str] = mapped_column('nome', String(45), nullable=False)
 
-    def __iter__(self) -> Iterable[Generator]:
+    def __iter__(self):
         yield from {
-            "date_create": "%s" % data_para_string(self.date_create),
-            "id": "%d" % int(self.id),
-            "sabor": "%s" % self.sabor,
+            "data_criacao": "%s" % data_para_string(self.date_create),
+            "id": "%d" % self.id,
+            "nome": "%s" % self.nome
         }.items()
 
     def __str__(self):

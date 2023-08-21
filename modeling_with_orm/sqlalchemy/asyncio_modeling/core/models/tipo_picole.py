@@ -7,23 +7,27 @@ from datetime import datetime
 from typing import Generator, Iterable, List
 
 from utils.model_base import Base
+from utils.helper import data_para_string
 
 
 class TiposPicole(Base):
 
-    __tablename__: str = "tipos_picole"
+    __tablename__: str = 'tipos_picole'
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, nullable=False)
+    id: Mapped[int] = mapped_column('id', BigInteger, autoincrement=True, primary_key=True, nullable=False)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True, nullable=False)
+    date_create: Mapped[datetime] = mapped_column('date_create', DateTime, default=datetime.now,
+                                                  nullable=False, index=True)
 
-    name: Mapped[str] = mapped_column(String(45), unique=True, nullable=True)
+    nome: Mapped[str] = mapped_column('nome', String(45), nullable=False)
 
-    def __iter__(self) -> Iterable[Generator]:
+    lote: Mapped['Lotes'] = relationship('Lotes', back_populates='tipos_picole', lazy='joined')
+
+    def __iter__(self):
         yield from {
-            "date_create": "%s" % self.date_create,
-            "id": "%d" % int(self.id),
-            "tipo_picole": "%s" % self.name,
+            "data_criacao": "%s" % data_para_string(self.date_create),
+            "id": "%d" % self.id,
+            "nome": "%s" % self.nome
         }.items()
 
     def __str__(self):

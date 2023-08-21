@@ -4,6 +4,8 @@ from tqdm import tqdm
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+import asyncio
+from typing import Coroutine
 from time import sleep
 
 from utils.db_session import create_session
@@ -19,210 +21,207 @@ from models.notas_fiscais import NotasFiscais
 from models.picoles import Picoles
 
 from utils.helper import gerar_float, gerar_string, gerar_inteiros, data_para_string, string_hexadecimal
-from models.weak_tables import AditivoNutritivoPicoles, ConservantesPicoles, IngredientesPicoles
+
 
 # Functions to Populate Tables >>
 
 # 1 -- Aditivos Nutritivos`
 
 
-def populate_aditivos_nutritivos() -> None:
-        db_handler: Session = create_session()
-        gerar_cor: str = string_hexadecimal()
+async def populate_aditivos_nutritivos() -> None:
+
+    async with create_session() as handler:
         # The package `tqdm` create custom loading bar
         for n in tqdm(range(1, 101),  # Sized Loop
-                      desc="Cadastrando",  # Bar description
-                      colour=gerar_cor):  # Loading Bar Color
-            nome: str = gerar_string(frase=True)
-            formula: str = gerar_string()
-            db_handler.add(AditivoNutritivo(name=nome, formula=formula))
-            sleep(0.5)
-        db_handler.commit()
-        db_handler.close()
-        sleep(0.5)
+                      desc="Cadastrando Aditivo Nutritivo",  # Bar description
+                      colour=string_hexadecimal()):  # Loading Bar Color
+
+            handler.add(AditivoNutritivo(nome=gerar_string(), formula_quimica=gerar_string(frase=True)))
+
+        await handler.commit()
+        await handler.close()
 
 
 # 2 -- `Sabores`
 
 
-def populate_sabores() -> None:
+async def populate_sabores() -> None:
 
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Cadastrando Sabores", colour=string_hexadecimal()):
+            handler.add(Sabores(nome=gerar_string()))
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        sabor: str = gerar_string()
-        db_handler.add(Sabores(sabor=sabor))
-
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.close()
 
 
 # 3 -- `Tipos Embalagem`
 
 
-def populate_tipos_embalagem() -> None:
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+async def populate_tipos_embalagem() -> None:
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        nome: str = gerar_string()
-        db_handler.add(TiposEmbalagem(name=nome))
-    db_handler.commit()
-    db_handler.close()
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Cadastrando Tipo Embalagem", colour=string_hexadecimal()):
+            handler.add(TiposEmbalagem(nome=gerar_string()))
+
+        await handler.commit()
+        await handler.close()
 
 
 # 4 -- `Tipos Picole`
 
-def populate_tipos_picole() -> None:
+async def populate_tipos_picole() -> None:
 
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Cadastrando Tipos Picole...", colour=string_hexadecimal()):
+            tipo_picole: TiposPicole = TiposPicole(nome=gerar_string())
+            handler.add(tipo_picole)
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        nome: str = gerar_string()
-        db_handler.add(TiposPicole(name=nome))
-
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.close()
+    await asyncio.sleep(0.01)
 
 
 # 5 --  `Ingredientes`
 
 
-def populate_ingredientes() -> None:
+async def populate_ingredientes() -> None:
 
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Populando Tabela Ingredientes...", colour=string_hexadecimal()):
+            handler.add(Ingredientes(nome=gerar_string()))
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        nome: str = gerar_string()
-        db_handler.add(Ingredientes(name=nome))
-
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.close()
 
 
 # 6 -- `Conservantes`
 
 
-def populate_conservantes() -> None:
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+async def populate_conservantes() -> None:
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        nome: str = gerar_string()
-        descricao: str = gerar_string(frase=True)
-        db_handler.add(Conservantes(name=nome, descricao=descricao))
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Populando Tabela Conservantes...", colour=string_hexadecimal()):
+            handler.add(Conservantes(nome=gerar_string(), descricao=gerar_string(frase=True)))
 
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.close()
 
 
 # 7 -- `Revendedores`
 
 
-def populate_revendedores() -> None:
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+async def populate_revendedores() -> None:
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Populando Tabela Revendedores...", colour=string_hexadecimal()):
+            handler.add(Revendedores(cnpj=str(gerar_inteiros()),
+                                     razao_social=gerar_string(frase=True),
+                                     contato=gerar_string()))
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-
-        cnpj: str = gerar_string()
-        razao_social: str = gerar_string(frase=True)
-        contato: str = gerar_string()
-        db_handler.add(Revendedores(cnpj=cnpj, razao_social=razao_social, contato=contato))
-
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.close()
 
 # 8 -- `Lotes`
 
 
-def populate_lotes() -> None:
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+async def populate_lotes() -> None:
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        id_tipo_picole: int = gerar_inteiros()
-        quantidade: int = gerar_inteiros()
-        db_handler.add(Lotes(id_tipos_picole=id_tipo_picole, quantidade=quantidade))
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Populando Tabela Lotes...", colour=string_hexadecimal()):
+            handler.add(Lotes(id_tipos_picole=gerar_inteiros(), quantidade=gerar_inteiros()))
 
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.close()
+    await asyncio.sleep(2.0)
 
 
 # 9 -- `Notas Fiscais`
 
 
-def populate_notas_fiscais() -> None:
+async def populate_notas_fiscais() -> None:
 
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Populando Tabela Notas Fiscais...", colour=string_hexadecimal()):
+            nota_fiscal: NotasFiscais = NotasFiscais(valor=gerar_float(digitios=3),
+                                                     numero_serie=gerar_string(),
+                                                     descricao=gerar_string(frase=True),
+                                                     id_revendedor=gerar_inteiros())
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
-        valor: float = gerar_float(digitios=3)
-        numero_serie: str = string_hexadecimal()
-        descricao: str = gerar_string(frase=True)
-        id_revendedor: int = gerar_inteiros()
+            lote = await handler.scalar(select(Lotes).where(Lotes.id == gerar_inteiros()))
+            nota_fiscal.lotes.append(lote)
+            handler.add(nota_fiscal)
 
-        db_handler.add(NotasFiscais(valor=valor, numero_serie=numero_serie,
-                                    descricao=descricao, id_revendedor=id_revendedor))
-
-    db_handler.commit()
-    db_handler.close()
-    sleep(0.5)
+        await handler.commit()
+        await handler.refresh(nota_fiscal)
+        await handler.close()
+    await asyncio.sleep(2.0)
 
 
 # 10 -- `Picoles`
 
 
-def populate_picoles() -> None:
+async def populate_picoles() -> None:
 
-    db_handler: Session = create_session()
-    gerar_cor: str = string_hexadecimal()
+    async with create_session() as handler:
+        for _ in tqdm(range(1, 101), desc="Populando Tabela Picoles...", colour=string_hexadecimal()):
 
-    for _ in tqdm(range(1, 101), desc="Carregando...", colour=gerar_cor):
+            picoles: Picoles = Picoles(preco=gerar_float(),
+                                       id_sabor=gerar_inteiros(),
+                                       id_tipos_embalagem=gerar_inteiros(),
+                                       id_tipos_picole=gerar_inteiros())
 
-        picoles: Picoles = Picoles(valor=gerar_float(), id_sabor=gerar_inteiros(), id_tipo_embalagem=gerar_inteiros(),
-                                   id_tipos_picole=gerar_inteiros())
+            ingrediente: Coroutine[Ingredientes] = await handler.scalar(select(Ingredientes)
+                                                                        .where(Ingredientes.id == gerar_inteiros()))
+            picoles.ingrediente.append(ingrediente)
 
-        picoles.ingredientes_association.append(IngredientesPicoles(ingredientes=Ingredientes(name=gerar_string())))
+            random_: float = gerar_float()
+            if random_ > 4:
+                aditivo_nutritivo: Coroutine[AditivoNutritivo] = await handler.scalar(select(AditivoNutritivo)
+                                                                                      .where(AditivoNutritivo.id ==
+                                                                                             gerar_inteiros()))
+                picoles.aditivo_nutritivo.append(aditivo_nutritivo)
 
-        random_: float = gerar_float()
-        if random_ > 4:
-            for _ in range(4):
-                picoles.aditivo_nutritivo_association.append(AditivoNutritivoPicoles(
-                    aditivos_nutritivos=AditivoNutritivo(name=gerar_string(), formula=gerar_string(frase=True))))
+            else:
+                conservante: Coroutine[Conservantes] = await handler.scalar(select(Conservantes)
+                                                                            .where(Conservantes.id == gerar_inteiros()))
+                picoles.conservante.append(conservante)
 
-        else:
-            for _ in range(4):
-                picoles.conservantes_association.append(ConservantesPicoles(conservantes=Conservantes(
-                    name=gerar_string(), descricao=gerar_string(frase=True))))
+            handler.add(picoles)
 
-        db_handler.add(picoles)
+        await handler.commit()
+        await handler.refresh(picoles)
+        await handler.close()
+    await asyncio.sleep(2.0)
 
-    db_handler.commit()
-    sleep(0.5)
+
+def populate_main() -> None:
+    # Running Group Tasks >>
+    maker = asyncio.get_event_loop()
+    tasks_nice_group = asyncio.gather(populate_aditivos_nutritivos(),
+                                      populate_sabores(),
+                                      populate_tipos_embalagem(),
+                                      populate_tipos_picole(),
+                                      populate_ingredientes(),
+                                      populate_conservantes(),
+                                      populate_revendedores(),
+                                      populate_lotes())
+    maker.run_until_complete(tasks_nice_group)
+    hanging = asyncio.all_tasks(loop=maker)
+    for task in hanging:
+        maker.run_until_complete(task)
+        task.cancel()
+        maker.close()
+
+    # Complex Tasks lonely running
+    maker.run_until_complete(populate_notas_fiscais())
+    maker.run_until_complete(populate_picoles())
 
 
 if __name__ == '__main__':
+
     # Run Populate
     # Tests Populates Tables >>
+    populate_main()
 
-    populate_aditivos_nutritivos()  # `AditivosNutritivos` >> OK
-    populate_sabores()  # `Sabores` >> OK
-    populate_tipos_embalagem()  # `Tipos Embalagem` >> OK
-    populate_tipos_picole()  # `Tipos Picole` >> OK
-    populate_ingredientes()  # `Ingredientes` >> OK
-    populate_conservantes()  # `Conservantes` >> OK
-    populate_revendedores()  # `Revendedores` >> (ERRO AO UTILIZAR `gerar_inteiros()` ao attr `cnpj`)
-    populate_lotes()  # `Lotes` >> OK
-    populate_notas_fiscais()  # `Notas Fiscais` >> OK
-    populate_picoles()  # `Picoles` >> OK
+
+

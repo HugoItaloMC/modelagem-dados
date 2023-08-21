@@ -9,40 +9,29 @@ from utils.model_base import Base
 from utils.helper import data_para_string
 from models.revendedores import Revendedores
 from models.lotes import Lotes
+from models.weak_tables import lotes_notas_fiscais
 
 
 class NotasFiscais(Base):
 
     __tablename__: str = "notas_fiscais"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column("id", BigInteger, primary_key=True, autoincrement=True, unique=True)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    date_criate: Mapped[datetime] = mapped_column("date_create", DateTime, default=datetime.today)
 
-    valor = mapped_column(DECIMAL(8, 2), nullable=False)
+    valor: Mapped[float] = mapped_column("valor", DECIMAL(8, 2), nullable=False)
 
-    numero_serie: Mapped[str] = mapped_column(String(45), nullable=False)
+    numero_serie: Mapped[str] = mapped_column("numero_serie", String(45), nullable=False, index=True)
 
-    descricao: Mapped[str] = mapped_column(String(200), nullable=False)
-    # Settings to relationship
-    id_revendedor: Mapped[int] = mapped_column(BigInteger, ForeignKey('revendedores.id'))
+    descricao: Mapped[str] = mapped_column("descricao", String(70), nullable=False)
 
-    revendedor: Mapped['Revendedores'] = relationship('Revendedores', backref='revendedores', lazy='joined')
+    id_revendedor: Mapped[Revendedores] = mapped_column('id_revendedor', BigInteger,
+                                                        ForeignKey('revendedores.id',
+                                                                   name='fk_revendedor_id',
+                                                                   ondelete='CASCADE'),
+                                                        primary_key=True, nullable=False, index=True)
 
-    lote: Mapped[List['Lotes']] = relationship(secondary='lotes_notas_fiscais', back_populates='notas_fiscais',
-                                               lazy='dynamic', viewonly=True)
+    revendedor: Mapped[List[Revendedores]] = relationship('Revendedores', lazy='joined', cascade='delete')
 
-    lote_association: Mapped[List['LotesNotasFiscais']] = relationship(back_populates='nota_fiscal')
-
-    def __iter__(self) -> Iterable[Generator]:
-        yield from {"date_create": "%s" % data_para_string(self.date_create),
-                    "id": "%d" % int(self.id),
-                    "cnpj": "%s" % self.cnpj,
-                    "razao_social": "%s" % self.razao_social,
-                    "contato": "%s" % self.contato}.items()
-
-    def __str__(self):
-        return json.dumps(dict(self), ensure_ascii=False)
-
-    def __repr__(self) -> str:
-        return self.__str__()
+    lotes: Mapped[List[Lotes]] = relationship('Lotes', secondary=lotes_notas_fiscais, backref='lotes', lazy='dynamic')

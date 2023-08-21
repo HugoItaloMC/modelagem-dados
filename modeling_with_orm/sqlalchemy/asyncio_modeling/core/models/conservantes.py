@@ -7,34 +7,30 @@ from typing import Iterable, List
 
 from utils.model_base import Base
 from utils.helper import data_para_string
-from models.weak_tables import ConservantesPicoles
 
 
 class Conservantes(Base):
 
     __tablename__: str = "conservantes"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column("id", BigInteger, autoincrement=True, primary_key=True, nullable=False)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    date_create: Mapped[datetime] = mapped_column('date_create', DateTime, default=datetime.now,
+                                                  index=True, nullable=False)
 
-    name: Mapped[str] = mapped_column(String(45), unique=True, nullable=True)
+    nome: Mapped[str] = mapped_column('nome', String(45), nullable=False)
+    descricao: Mapped[str] = mapped_column('descricao', String(200), nullable=False)
 
-    descricao: Mapped[str] = mapped_column(String(200), nullable=True)
-
-    picole: Mapped[List['Picoles']] = relationship(secondary='conservantes_picoles', lazy='joined', viewonly=True)
-    picole_association: Mapped[List['ConservantesPicoles']] = relationship(back_populates='conservantes')
-
-    def __iter__(self) -> Iterable:
+    def __iter__(self):
         yield from {
-            "date_create": "%s" % data_para_string(self.date_create),
-            "id": "%d" % int(self.id),
-            "conservantes": "%s" % self.name,
-            "descricao": "%s\n" % self.descricao
+            "data_criacao": "%s" % data_para_string(self.date_create),
+            "id": "%d" % self.id,
+            "nome": "%s" % self.nome,
+            "descricao": "%s" % self.descricao
         }.items()
 
     def __str__(self):
         return json.dumps(dict(self), ensure_ascii=False)
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return self.__str__()

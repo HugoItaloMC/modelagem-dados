@@ -1,4 +1,3 @@
-
 from sqlalchemy import String, BigInteger, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -15,29 +14,28 @@ class Revendedores(Base):
 
     __tablename__: str = "revendedores"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, nullable=False)
+    id: Mapped[int] = mapped_column("id", BigInteger, primary_key=True, autoincrement=True, nullable=False)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    date_create: Mapped[datetime] = mapped_column("date_create", DateTime, default=datetime.today,
+                                                  nullable=False, index=True)
 
-    cnpj: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    cnpj: Mapped[str] = mapped_column("cnpj", String(45), nullable=False)
 
-    razao_social: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    razao_social: Mapped[str] = mapped_column("razao_social", String(100), nullable=False)
 
-    contato: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    contato: Mapped[str] = mapped_column("contato", String(45), nullable=False)
 
-    def __iter__(self) -> Iterable[Generator]:
+    def __iter__(self) -> Iterable:
         yield from {
-            "date_create": "%s" % data_para_string(self.date_create),
-            "id": "%d" % int(self.id),
+            "data_criaca": "%s" % data_para_string(self.date_create),
+            "id": "%d" % self.id,
             "cnpj": "%s" % self.cnpj,
             "razao_social": "%s" % self.razao_social,
             "contato": "%s" % self.contato
         }.items()
 
-    def __str__(self):
-        return json.dumps(dict(self),
-                          ensure_ascii=False)
+    def __str__(self) -> str:
+        return json.dumps(dict(self), ensure_ascii=False)
 
     def __repr__(self) -> str:
         return self.__str__()
-

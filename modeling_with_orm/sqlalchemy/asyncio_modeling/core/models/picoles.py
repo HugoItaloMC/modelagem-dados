@@ -1,77 +1,64 @@
 from sqlalchemy import Integer, BigInteger, DateTime, DECIMAL, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
 
 import json
 from typing import Iterable, List, Optional
 
 from utils.model_base import Base
-from models.weak_tables import (AditivoNutritivoPicoles, IngredientesPicoles, ConservantesPicoles)
 
-from models.ingredientes import Ingredientes
 from models.conservantes import Conservantes
 from models.aditivos_nutritivos import AditivoNutritivo
+from models.ingredientes import Ingredientes
 from models.sabores import Sabores
 from models.tipo_picole import TiposPicole
 from models.tipos_embalagem import TiposEmbalagem
+
+from models.weak_tables import aditivo_nutritivo_picole, conservantes_picoles, ingredientes_picoles
 
 
 class Picoles(Base):
 
     __tablename__: str = "picoles"
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, unique=True)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    id: Mapped[int] = mapped_column("id", BigInteger, primary_key=True,
+                                    autoincrement=True, nullable=False, unique=False)
 
-    valor = mapped_column(DECIMAL(8, 2), nullable=False)
+    date_create: Mapped[datetime] = mapped_column("date_create", DateTime,
+                                                  default=datetime.today, nullable=False)
 
-    # Settings to relationship's >>
-    # Relation `Sabores`
-    id_sabor: Mapped[int] = mapped_column(BigInteger, ForeignKey('sabores.id'), nullable=False, primary_key=True)
+    preco: Mapped[float] = mapped_column('preco', DECIMAL(8, 2), nullable=False)
 
-    sabor: Mapped['Sabores'] = relationship('Sabores', lazy='joined')
+    id_sabor: Mapped[int] = mapped_column("id_sabor", BigInteger,
+                                          ForeignKey('sabores.id',
+                                                     name='fk_sabor_id',
+                                                     ondelete="CASCADE"),
+                                          nullable=False, index=True)
 
-    # Relation `TiposEmbalagem`
-    id_tipo_embalagem: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_embalagem.id'), nullable=False, primary_key=True)
+    sabor: Mapped[Sabores] = relationship('Sabores', lazy='joined', cascade='delete')
 
-    tipos_embalagem: Mapped['TiposEmbalagem'] = relationship('TiposEmbalagem', lazy='joined')
+    id_tipos_embalagem: Mapped[int] = mapped_column("id_tipos_embalagem", BigInteger,
+                                                    ForeignKey('tipos_embalagem.id',
+                                                               name='fk_tipos_embalagem_id',
+                                                               ondelete="CASCADE"),
+                                                    nullable=False, index=True)
 
-    # Relation `TiposPicole`
-    id_tipos_picole: Mapped[int] = mapped_column(BigInteger, ForeignKey('tipos_picole.id'), nullable=False)
+    tipos_embalagem: Mapped[TiposEmbalagem] = relationship("TiposEmbalagem", lazy='joined', cascade='delete')
 
-    tipos_picole: Mapped['TiposPicole'] = relationship('TiposPicole', lazy='joined')
-    # Settings Weak Tables
+    id_tipos_picole: Mapped[int] = mapped_column("id_tipos_picole", BigInteger,
+                                                 ForeignKey("tipos_picole.id",
+                                                            name='fk_tipos_picole_id',
+                                                            ondelete="CASCADE"),
+                                                 nullable=False, index=True)
 
-    # Weak `ingredientes_picoles`
-    ingredientes: Mapped[List['Ingredientes']] = relationship('Ingredientes', secondary='ingredientes_picoles',
-                                                            back_populates='picole', lazy='joined', viewonly=True)
+    tipos_picole: Mapped[TiposPicole] = relationship("TiposPicole", lazy='joined', cascade='delete')
 
-    ingredientes_association: Mapped[List['IngredientesPicoles']] = relationship('IngredientesPicoles', back_populates='picole')
+    ingrediente: Mapped[List[Ingredientes]] = relationship('Ingredientes', secondary=ingredientes_picoles,
+                                                           backref='ingredientes', lazy='joined')
 
-    #  Weak `conservantes_picoles`
-    conservantes: Mapped[Optional[List['Conservantes']]] = relationship('Conservantes', secondary='conservantes_picoles',
-                                                            back_populates='picole',lazy='joined', viewonly=True)
+    conservante: Mapped[List[Conservantes]] = relationship('Conservantes', secondary=conservantes_picoles,
+                                                           backref='conservantes', lazy='joined')
 
-    conservantes_association: Mapped[List['ConservantesPicoles']] = relationship('ConservantesPicoles', back_populates='picole')
-
-    # # Weak `aditivos_nutritivos`
-    aditivos_nutritivos: Mapped[Optional[List['AditivoNutritivo']]] = relationship('AditivoNutritivo',
-                                                                       secondary='aditivo_nutritivo_picole',
-                                                                       back_populates='picole', lazy='joined',
-                                                                       viewonly=True)
-
-    aditivo_nutritivo_association: Mapped[List['AditivoNutritivoPicoles']] = relationship('AditivoNutritivoPicoles', back_populates='picole')
-
-    def __iter__(self) -> Iterable:
-        # For object generator type iterable
-        yield from {
-            "date_create": "%s" % self.date_create, "id": "%d" % int(self.id), "cnpj": "%s" % self.cnpj,
-            "razao_social": "%s" % self.razao_social, "contato": "%s" % self.contato}
-
-    def __str__(self) -> str:
-        # Is String object from json
-        return json.dumps(dict(self), ensure_ascii=False)
-
-    def __repr__(self) -> str:
-        #  Whas is str
-        return self.__str__()
+    aditivo_nutritivo: Mapped[List[AditivoNutritivo]] = relationship('AditivoNutritivo',
+                                                                     secondary=aditivo_nutritivo_picole,
+                                                                     backref='aditivos_nutritivos', lazy='joined')

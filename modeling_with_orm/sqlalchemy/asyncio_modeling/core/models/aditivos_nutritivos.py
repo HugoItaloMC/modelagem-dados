@@ -3,35 +3,21 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 import json
 from datetime import datetime
-from typing import Iterable, List
 
 from utils.model_base import Base
 from utils.helper import data_para_string
-from models.weak_tables import AditivoNutritivoPicoles
 
 
 class AditivoNutritivo(Base):
 
-    __tablename__: str = "aditivo_nutritivo"
+    __tablename__: str = 'aditivos_nutritivos'
+    id: Mapped[int] = mapped_column('id', BigInteger, primary_key=True, autoincrement=True, nullable=False)
 
-    id: Mapped[int] = mapped_column(BigInteger,
-                                    primary_key=True,
-                                    autoincrement=True)
+    date_create: Mapped[datetime] = mapped_column('date_create', DateTime, default=datetime.now, index=True, nullable=False)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime,
-                                                  default=datetime.now,
-                                                  index=True)
+    nome: Mapped[str] = mapped_column('nome', String(45), nullable=False)
 
-    name: Mapped[str] = mapped_column(String(45),
-                                      unique=True,
-                                      nullable=True)
-
-    formula: Mapped[str] = mapped_column(String(200),
-                                         unique=True,
-                                         nullable=True)
-    picole: Mapped[List['Picoles']] = relationship(secondary='aditivo_nutritivo_picole',
-                                                   back_populates='aditivos_nutritivos', lazy='joined', viewonly=True)
-    picole_association: Mapped[List['AditivoNutritivoPicoles']] = relationship(back_populates='aditivos_nutritivos')
+    formula_quimica: Mapped[str] = mapped_column('fornula_quimica', String(200), nullable=False)
 
     def __iter__(self):
         yield from {

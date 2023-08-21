@@ -28,7 +28,7 @@ def gerar_float(digitios: int = 1) -> float:
     # ATTR: `digitos` total de digítos para gerar o número aleatório
     # Lógica para gerar dezenas, centenas, milhares
     valor: float = 0
-    #  randomicos com casas decimais utilizando os operadores `<<` e `>>`
+    #  randomicos com casas decimais utilizando os operadores de deslocamento `<<` e `>>`
     #  Lembrando que é para caso de estudos, está lógica ñ foi testada em aplicacões mais complexas (API's)
     if digitios == 1:
         valor = random.uniform(1000 >> 9, 1 << 3)  # Unidades
