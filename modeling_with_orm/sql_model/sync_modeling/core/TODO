@@ -1,0 +1,4 @@
+ - Aplicar mapeamento de entidade relacionamento utilizando ORM sqlalchemy
+ - Designar regras e cardinalidades entre entidades (tabelas)
+ - Aplicar tipos aos atributos(colunas) conforme mapeamento do EER (EER_FABRICA_PICOLE.png)
+ - Testar unitáriamente cada objeto que represente qualquer item (modelos, handlers, etc...)

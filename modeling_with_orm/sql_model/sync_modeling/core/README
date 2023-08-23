@@ -1,0 +1,12 @@
+    Está pasta  contém estudos  sobre o ORM Python SQLAlchemy
+  onde vou testar unitáriamente cada objeto para mapear erros
+  levantados no desenvolvimento.
+
+    Antes de utilizar o conteúdo do projeto verificar o arquivo
+  `REQUERIMENTS.txt` para verificar versões das ferramentas em
+  uso no projeto
+
+   Para rodar o código basta estar  na pasta raiz  do projeto  e
+  e levando em consideracão que o python esteja instalado e com-
+  pilado na máquina, rode o seguinte comando:
+       `  python3 -m testerr_create_main  `
