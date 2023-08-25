@@ -1,89 +1,46 @@
-from sqlalchemy import ForeignKey, BigInteger
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlmodel import Field, SQLModel
 
+from typing import Optional
 
-from utils.model_base import Base
-from models.notas_fiscais import NotasFiscais
-from models.lotes import Lotes
 # Weak Tables of `N=N` relations from `Picoles`
 
 
-class AditivoNutritivoPicoles(Base):
+class AditivoNutritivoPicoles(SQLModel, table=True):
     #  N=N of `aditivos_nutritivos with picoles`
 
     __tablename__: str = 'aditivo_nutritivo_picole'
+    id: Optional[int] = Field(default=None, primary_key=True)
 
-    id_picole: Mapped[int] = mapped_column('id_picole', BigInteger,
-                                           ForeignKey('picoles.id'), primary_key=True)
-
-    id_aditivo_nutritivo: Mapped[int] = mapped_column('id_aditivo_nutritivo', BigInteger,
-                                                      ForeignKey('aditivo_nutritivo.id'), primary_key=True)
-
-    picole: Mapped["Picoles"] = relationship(back_populates='aditivo_nutritivo_association')
-
-    aditivos_nutritivos: Mapped['AditivoNutritivo'] = relationship(back_populates='picole_association')
+    id_picole: Optional[int] = Field(default=None, foreign_key='picoles.id', index=True)
+    id_aditivo_nutritivo: Optional[int] = Field(default=None, foreign_key='aditivos_nutritivos.id', index=True)
 
 
-class IngredientesPicoles(Base):
+class IngredientesPicoles(SQLModel, table=True):
     #  N=N of `ingredientes with picoles`
 
     __tablename__: str = 'ingredientes_picoles'
+    id: Optional[int] = Field(default=None, primary_key=True)
 
-    id_picole: Mapped[int] = mapped_column('id_picole', BigInteger,
-                                           ForeignKey('picoles.id'), primary_key=True)
-
-    id_ingredientes: Mapped[int] = mapped_column('id_ingredientes', BigInteger,
-                                                 ForeignKey('ingredientes.id'), primary_key=True)
-
-    picole: Mapped['Picoles'] = relationship(back_populates='ingredientes_association')
-    ingredientes: Mapped['Ingredientes'] = relationship(back_populates='picole_association')
+    id_picole: Optional[int] = Field(default=None, foreign_key='picoles.id', index=True)
+    id_ingredientes: Optional[int] = Field(default=None, foreign_key='ingredientes.id', index=True)
 
 
-class ConservantesPicoles(Base):
+class ConservantesPicoles(SQLModel, table=True):
     #  N=N of `ingredientes with picoles`
 
     __tablename__: str = 'conservantes_picoles'
+    id: Optional[int] = Field(default=None, primary_key=True)
 
-    id_picole: Mapped[int] = mapped_column('id_picole', BigInteger,
-                                           ForeignKey('picoles.id'), primary_key=True)
-
-    id_conservantes: Mapped[int] = mapped_column('id_conservantes', BigInteger,
-                                                 ForeignKey('conservantes.id'), primary_key=True)
-
-    picole: Mapped['Picoles'] = relationship(back_populates='conservantes_association')
-    conservantes: Mapped['Conservantes'] = relationship(back_populates='picole_association')
+    id_picole: Optional[int] = Field(default=None, foreign_key='picoles.id')
+    id_conservantes: Optional[int] = Field(default=None, foreign_key='conservantes.id')
 
 
-class LotesNotasFiscais(Base):
+class LotesNotasFiscais(SQLModel, table=True):
     # N=N of `notas_fiscais with lotes`
 
     __tablename__: str = 'lotes_notas_fiscais'
 
-    id_lote: Mapped[int] = mapped_column('id_lote', BigInteger,
-                                           ForeignKey('lotes.id'), primary_key=True, nullable=False)
+    id_lote: Optional[int] = Field(foreign_key='lotes.id', primary_key=True)
 
-    id_nota_fiscal: Mapped[int] = mapped_column('id_nota_fiscal', BigInteger,
-                                                 ForeignKey('notas_fiscais.id'), primary_key=True, nullable=False)
+    id_nota_fiscal: Optional[int] = Field(foreign_key='notas_fiscais.id', primary_key=True)
 
-    lote: Mapped['Lotes'] = relationship(back_populates='nota_fiscal_association')
-    nota_fiscal: Mapped['NotasFiscais'] = relationship(back_populates='lote_association')
-
-
-class LoteTipoPicole(Base):
-
-    __tablename__: str = 'lote_tipo_picole'
-
-    id_tipo_picole: Mapped[int] = mapped_column('id_tipo_picole',
-                                                 BigInteger,
-                                                ForeignKey('tipos_picole.id'),
-                                                primary_key=True,
-                                                nullable=False)
-
-    id_lote: Mapped[int] = mapped_column('id_lote',
-                                         BigInteger,
-                                         ForeignKey('lotes.id'),
-                                         primary_key=True,
-                                         nullable=False)
-
-    lote: Mapped['Lotes'] = relationship(back_populates='tipo_picole_association')
-    tipo_picole: Mapped['TiposPicole'] = relationship(back_populates='lote_association')

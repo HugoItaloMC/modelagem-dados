@@ -23,8 +23,8 @@ class AditivoNutritivo(Base):
         yield from {
             "date_create": "%s" % data_para_string(self.date_create),
             "id": "%s" % str(self.id),
-            "name": "%s" % self.name,
-            "formula": "%s\n" % self.formula
+            "name": "%s" % self.nome,
+            "formula": "%s\n" % self.formula_quimica
         }.items()
 
     def __str__(self):

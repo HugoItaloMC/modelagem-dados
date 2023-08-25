@@ -14,8 +14,8 @@ class AditivoNutritivo(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, default=None)
     date_create: datetime = Field(default=datetime.now(), index=True)
 
-    nome: str = Field(max_length=45, unique=True,  nullable=False)
-    formula_quimica: str = Field(max_length=100, unique=True, nullable=False)
+    nome: str = Field(max_length=45)
+    formula_quimica: str = Field(max_length=100)
 
     def __iter__(self):
         yield from {

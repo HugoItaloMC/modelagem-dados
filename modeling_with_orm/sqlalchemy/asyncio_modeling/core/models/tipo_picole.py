@@ -21,7 +21,6 @@ class TiposPicole(Base):
 
     nome: Mapped[str] = mapped_column('nome', String(45), nullable=False)
 
-    lote: Mapped['Lotes'] = relationship('Lotes', back_populates='tipos_picole', lazy='joined')
 
     def __iter__(self):
         yield from {

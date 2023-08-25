@@ -14,7 +14,7 @@ class Ingredientes(SQLModel, table=True):
 
     id: Optional[int] = Field(primary_key=True, default=None)
 
-    date_create: datetime = Field(default=datetime.now, index=True)
+    date_create: datetime = Field(default=datetime.now(), index=True)
 
     nome: str = Field(max_length=45, unique=True)
 

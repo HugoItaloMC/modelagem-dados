@@ -1,7 +1,6 @@
 from sqlalchemy import ForeignKey, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from typing import List
 
 from utils.model_base import Base
 from models.notas_fiscais import NotasFiscais

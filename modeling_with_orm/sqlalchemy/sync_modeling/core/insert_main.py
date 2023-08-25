@@ -185,6 +185,7 @@ if __name__ == '__main__':
 
     # 1 -- Tests Insert data `Aditivos Nutritivos` >> OK
     #insert_aditivos_nutritivos()
+
     # 2 -- Tests insertt Data `Sabores` >> OK
     #insert_sabores()
 
@@ -211,4 +212,4 @@ if __name__ == '__main__':
 
     # 10 -- Insert data `Picoles`
     #insert_picoles()
-    ...
+

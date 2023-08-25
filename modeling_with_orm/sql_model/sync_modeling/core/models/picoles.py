@@ -1,13 +1,11 @@
-
-from sqlalchemy import Integer, BigInteger, DateTime, DECIMAL, ForeignKey, Column
-from sqlalchemy.orm import relationship
+from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 
 import json
 from typing import Iterable, List, Optional
 
-from utils.model_base import Base
-from models.weak_tables import (aditivo_nutritivo_picole, ingredientes_picoles, conservantes_picoles)
+
+from models.weak_tables import (AditivoNutritivoPicoles, IngredientesPicoles, ConservantesPicoles)
 
 from models.ingredientes import Ingredientes
 from models.conservantes import Conservantes
@@ -17,34 +15,33 @@ from models.tipo_picole import TiposPicole
 from models.tipos_embalagem import TiposEmbalagem
 
 
-class Picoles(Base):
+class Picoles(SQLModel, table=True):
 
     __tablename__: str = "picoles"
-    Column('id', BigInteger, autoincrement=True, nullable=False),
-    Column('preco', DECIMAL(8, 2), nullable=False)
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    date_create: datetime = Field(default=datetime.now(), index=True)
+    preco: float = Field()
 
     # ForeignKey's
-    Column('id_sabor', BigInteger, ForeignKey('sabores.id'), nullable=False),
-    sabor = relationship('Sabores', lazy='joined'),
+    id_sabor: Optional[int] = Field(default=None, foreign_key='sabores.id')
+    sabor: Sabores = Relationship(sa_relationship_kwargs={"lazy": "joined", "cascade": "delete"})
 
-    Column('id_tipo_embalagem', BigInteger, ForeignKey('tipos_embalagem.id'), nullable=False)
-    tipos_embalagem = relationship('TiposEmbalagem', lazy='joined')
+    id_tipo_embalagem: Optional[int] = Field(default=None, foreign_key='tipos_embalagem.id')
+    tipos_embalagem: TiposEmbalagem = Relationship(sa_relationship_kwargs={"lazy": "joined", "cascade": "delete"})
 
-    Column('id_tipo_picole', BigInteger, ForeignKey('tipos_picole.id'), nullable=True)
-    tipos_picole = relationship('TiposPicole', lazy='joined')
+    id_tipos_picole: Optional[int] = Field(default=None, foreign_key='tipos_picole.id')
+    tipos_picole: TiposPicole = Relationship(sa_relationship_kwargs={"lazy": "joined", "cascade": "delete"})
 
     # Complex relation
-    ingrediente: List[Ingredientes] = relationship('Ingrediente',
-                                                   secondary=ingredientes_picoles,
-                                                   backref='ingredientes')
+    ingrediente: Ingredientes = Relationship(link_model=IngredientesPicoles, sa_relationship_kwargs={"lazy": "joined",
+                                                                                                    "viewonly": True})
 
-    conservantes: List[Conservantes] = relationship('Conservantes',
-                                                    secondary=conservantes_picoles,
-                                                    backref='conservantes')
+    conservantes: Conservantes = Relationship(link_model=ConservantesPicoles, sa_relationship_kwargs={"lazy": "joined",
+                                                                                                     "viewonly": True})
 
-    aditivo_nutritivo: List[AditivoNutritivo] = relationship('AditivoNutritivo',
-                                                             secondary=aditivo_nutritivo_picole,
-                                                             backref='aditivo_nutritivo')
+    aditivo_nutritivo: AditivoNutritivo = Relationship(link_model=AditivoNutritivoPicoles,
+                                                       sa_relationship_kwargs={"lazy": "joined", "viewonly": True})
 
     def __iter__(self) -> Iterable:
         yield from {

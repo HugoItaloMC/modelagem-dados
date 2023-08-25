@@ -1,29 +1,26 @@
-
-from sqlalchemy import String, BigInteger, DateTime
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlmodel import SQLModel, Field
 
 from datetime import datetime
 from typing import List
 import json
-from typing import Iterable, Generator
+from typing import Iterable, Generator, Optional
 
-from utils.model_base import Base
 from utils.helper import data_para_string
 
 
-class Revendedores(Base):
+class Revendedores(SQLModel, table=True):
 
     __tablename__: str = "revendedores"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, nullable=False)
+    id: int = Field(primary_key=True, default=None)
 
-    date_create: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, index=True)
+    date_create: datetime = Field(default=datetime.now(), index=True)
 
-    cnpj: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    cnpj: str = Field(max_length=45, unique=True, nullable=False)
 
-    razao_social: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    razao_social: str = Field(max_length=100, unique=True, nullable=False)
 
-    contato: Mapped[str] = mapped_column(String(45), unique=True, nullable=False)
+    contato: str = Field(max_length=45, unique=True, nullable=False)
 
     def __iter__(self) -> Iterable[Generator]:
         yield from {

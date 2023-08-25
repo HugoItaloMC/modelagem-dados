@@ -18,7 +18,7 @@ class NotasFiscais(Base):
 
     id: Mapped[int] = mapped_column("id", BigInteger, primary_key=True, autoincrement=True, unique=True)
 
-    date_criate: Mapped[datetime] = mapped_column("date_create", DateTime, default=datetime.today)
+    date_create: Mapped[datetime] = mapped_column("date_create", DateTime, default=datetime.today)
 
     valor: Mapped[float] = mapped_column("valor", DECIMAL(8, 2), nullable=False)
 
@@ -34,4 +34,4 @@ class NotasFiscais(Base):
 
     revendedor: Mapped[List[Revendedores]] = relationship('Revendedores', lazy='joined', cascade='delete')
 
-    lotes: Mapped[List[Lotes]] = relationship('Lotes', secondary=lotes_notas_fiscais, backref='lotes', lazy='dynamic')
+    lotes: Mapped[List[Lotes]] = relationship('Lotes', secondary=lotes_notas_fiscais, backref='lotes', lazy='joined')

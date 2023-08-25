@@ -5,6 +5,6 @@ from models.tipo_picole import TiposPicole
 from models.ingredientes import Ingredientes
 from models.conservantes import Conservantes
 from models.lotes import Lotes
-#from models.revendedores import Revendedores
-#from models.notas_fiscais import NotasFiscais
-#from models.picoles import Picoles
+from models.revendedores import Revendedores
+from models.notas_fiscais import NotasFiscais
+from models.picoles import Picoles
