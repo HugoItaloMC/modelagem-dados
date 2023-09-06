@@ -28,16 +28,16 @@ class NotasFiscais(SQLModel, table=True):
 
     revendedor: Revendedores = Relationship(sa_relationship_kwargs={"lazy": "joined", "cascade": "delete"})
 
-    lote: List[Lotes] = Relationship(link_model=LotesNotasFiscais, sa_relationship_kwargs={"lazy": "joined", "viewonly": True})
-
-
+    lote: List[Lotes] = Relationship(link_model=LotesNotasFiscais, sa_relationship_kwargs={"lazy": "dynamic", "viewonly": True}, back_populates='nota_fiscal')
 
     def __iter__(self) -> Iterable[Generator]:
         yield from {"date_create": "%s" % data_para_string(self.date_create),
-                    "id": "%d" % int(self.id),
-                    "cnpj": "%s" % self.cnpj,
-                    "razao_social": "%s" % self.razao_social,
-                    "contato": "%s" % self.contato}.items()
+                    "id": "%d" % self.id,
+                    "valor": "%r" % self.valor,
+                    "numero_de_serie": "%s" % self.numero_serie,
+                    "descricao": "%s" % self.descricao,
+                    "revendedor": "%d" % self.id_revendedor,
+                    "lote": "%s" % " ".join(map(str, self.lote))}.items()
 
     def __str__(self):
         return json.dumps(dict(self), ensure_ascii=False)

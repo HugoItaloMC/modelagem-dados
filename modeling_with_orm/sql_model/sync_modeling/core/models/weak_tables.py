@@ -21,8 +21,8 @@ class IngredientesPicoles(SQLModel, table=True):
     __tablename__: str = 'ingredientes_picoles'
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    id_picole: Optional[int] = Field(default=None, foreign_key='picoles.id', index=True)
-    id_ingredientes: Optional[int] = Field(default=None, foreign_key='ingredientes.id', index=True)
+    id_picole: Optional[int] = Field(foreign_key='picoles.id', index=True)
+    id_ingredientes: Optional[int] = Field(foreign_key='ingredientes.id', index=True)
 
 
 class ConservantesPicoles(SQLModel, table=True):
@@ -31,8 +31,8 @@ class ConservantesPicoles(SQLModel, table=True):
     __tablename__: str = 'conservantes_picoles'
     id: Optional[int] = Field(default=None, primary_key=True)
 
-    id_picole: Optional[int] = Field(default=None, foreign_key='picoles.id')
-    id_conservantes: Optional[int] = Field(default=None, foreign_key='conservantes.id')
+    id_picole: Optional[int] = Field(foreign_key='picoles.id')
+    id_conservantes: Optional[int] = Field(foreign_key='conservantes.id')
 
 
 class LotesNotasFiscais(SQLModel, table=True):
@@ -40,7 +40,8 @@ class LotesNotasFiscais(SQLModel, table=True):
 
     __tablename__: str = 'lotes_notas_fiscais'
 
-    id_lote: Optional[int] = Field(foreign_key='lotes.id', primary_key=True)
+    id: int = Field(primary_key=True)
 
-    id_nota_fiscal: Optional[int] = Field(foreign_key='notas_fiscais.id', primary_key=True)
+    id_lote: Optional[int] = Field(foreign_key='lotes.id')
+    id_nota_fiscal: Optional[int] = Field(foreign_key='notas_fiscais.id')
 

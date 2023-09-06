@@ -17,15 +17,11 @@ class AditivoNutritivo(Base):
 
     nome: Mapped[str] = mapped_column('nome', String(45), nullable=False)
 
-    formula_quimica: Mapped[str] = mapped_column('fornula_quimica', String(200), nullable=False)
+    formula_quimica: Mapped[str] = mapped_column('formula_quimica', String(200), nullable=False)
 
     def __iter__(self):
-        yield from {
-            "date_create": "%s" % data_para_string(self.date_create),
-            "id": "%s" % str(self.id),
-            "name": "%s" % self.nome,
-            "formula": "%s\n" % self.formula_quimica
-        }.items()
+        yield from {"_class": self.__class__.__name__,
+                    "_attrs": str({attr: getattr(self, attr) for attr in self.__dict__.keys() if not attr.startswith("_sa_instance_state")})}.items()
 
     def __str__(self):
         return json.dumps(dict(self), ensure_ascii=False)

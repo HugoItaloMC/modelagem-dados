@@ -15,13 +15,13 @@ class Sabores(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, default=None)
     date_create: datetime = Field(default=datetime.now(), index=True)
 
-    nome: str = Field(unique=True, nullable=False)
+    nome: str = Field(nullable=False)
 
     def __iter__(self) -> Iterable[Generator]:
         yield from {
             "date_create": "%s" % data_para_string(self.date_create),
-            "id": "%d" % int(self.id),
-            "sabor": "%s" % self.sabor,
+            "id": "%d" % self.id,
+            "sabor": "%s" % self.nome,
         }.items()
 
     def __str__(self):

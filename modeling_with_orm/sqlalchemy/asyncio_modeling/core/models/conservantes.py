@@ -22,12 +22,9 @@ class Conservantes(Base):
     descricao: Mapped[str] = mapped_column('descricao', String(200), nullable=False)
 
     def __iter__(self):
-        yield from {
-            "data_criacao": "%s" % data_para_string(self.date_create),
-            "id": "%d" % self.id,
-            "nome": "%s" % self.nome,
-            "descricao": "%s" % self.descricao
-        }.items()
+        yield from {"_class": self.__class__.__name__,
+                    "_attrs": str({attr: getattr(self, attr) for attr in self.__dict__.keys() if
+                                   not attr.startswith("_sa_instance_state")})}.items()
 
     def __str__(self):
         return json.dumps(dict(self), ensure_ascii=False)

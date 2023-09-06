@@ -25,17 +25,12 @@ class Revendedores(Base):
 
     contato: Mapped[str] = mapped_column("contato", String(45), nullable=False)
 
-    def __iter__(self) -> Iterable:
-        yield from {
-            "data_criaca": "%s" % data_para_string(self.date_create),
-            "id": "%d" % self.id,
-            "cnpj": "%s" % self.cnpj,
-            "razao_social": "%s" % self.razao_social,
-            "contato": "%s" % self.contato
-        }.items()
+    def __iter__(self):
+        yield from {"_class": self.__class__.__name__,
+                    "_attrs": str({attr: getattr(self, attr) for attr in self.__dict__.keys() if not attr.startswith("_sa_instance_state")})}.items()
 
-    def __str__(self) -> str:
+    def __str__(self):
         return json.dumps(dict(self), ensure_ascii=False)
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return self.__str__()

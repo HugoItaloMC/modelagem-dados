@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
 
 import json
-from typing import Iterable, List, Optional
+from typing import Iterable, List, Optional, Generator
 
 from utils.model_base import Base
 
@@ -13,8 +13,9 @@ from models.ingredientes import Ingredientes
 from models.sabores import Sabores
 from models.tipo_picole import TiposPicole
 from models.tipos_embalagem import TiposEmbalagem
-
 from models.weak_tables import aditivo_nutritivo_picole, conservantes_picoles, ingredientes_picoles
+
+from utils.helper import data_para_string
 
 
 class Picoles(Base):
@@ -30,9 +31,7 @@ class Picoles(Base):
     preco: Mapped[float] = mapped_column('preco', DECIMAL(8, 2), nullable=False)
 
     id_sabor: Mapped[int] = mapped_column("id_sabor", BigInteger,
-                                          ForeignKey('sabores.id',
-                                                     name='fk_sabor_id',
-                                                     ondelete="CASCADE"),
+                                          ForeignKey('sabores.id', name='fk_sabor_id', ondelete="CASCADE"),
                                           nullable=False, index=True)
 
     sabor: Mapped[Sabores] = relationship('Sabores', lazy='joined', cascade='delete')
@@ -54,11 +53,21 @@ class Picoles(Base):
     tipos_picole: Mapped[TiposPicole] = relationship("TiposPicole", lazy='joined', cascade='delete')
 
     ingrediente: Mapped[List[Ingredientes]] = relationship('Ingredientes', secondary=ingredientes_picoles,
-                                                           backref='ingredientes', lazy='joined')
+                                                           backref='ingredientes', lazy='joined', cascade='delete')
 
-    conservante: Mapped[List[Conservantes]] = relationship('Conservantes', secondary=conservantes_picoles,
-                                                           backref='conservantes', lazy='joined')
+    conservante: Mapped[Optional[List[Conservantes]]] = relationship('Conservantes', secondary=conservantes_picoles,
+                                                                     backref='conservantes', lazy='joined', cascade='delete')
 
-    aditivo_nutritivo: Mapped[List[AditivoNutritivo]] = relationship('AditivoNutritivo',
-                                                                     secondary=aditivo_nutritivo_picole,
-                                                                     backref='aditivos_nutritivos', lazy='joined')
+    aditivo_nutritivo: Mapped[Optional[List[AditivoNutritivo]]] = relationship('AditivoNutritivo',
+                                                                               secondary=aditivo_nutritivo_picole,
+                                                                               backref='aditivos_nutritivos', lazy='joined', cascade='delete')
+
+    def __iter__(self):
+        yield from {"_class": self.__class__.__name__,
+                    "_attrs": str({attr: getattr(self, attr) for attr in self.__dict__.keys() if not attr.startswith("_sa_instance_state")})}.items()
+
+    def __str__(self):
+        return json.dumps(dict(self), ensure_ascii=False, indent=True)
+
+    def __repr__(self):
+        return self.__str__()

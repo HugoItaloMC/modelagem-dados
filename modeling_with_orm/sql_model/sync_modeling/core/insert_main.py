@@ -3,9 +3,8 @@ Learning how to insert data into objects with SQLAlchemy `orm` Python,
 In this module, data will be entered individually and manually
 """
 
-from sqlalchemy import select
+from sqlmodel import select
 
-import asyncio
 
 # Import Handler how `sessionmaker and Session` of SQLAlchemy
 from utils.db_session import create_session
@@ -113,9 +112,9 @@ def insert_picoles() -> None:
     with create_session() as handler, handler.begin():
         picole: Picoles = Picoles(preco=float(input("::\tPRECO: ")),
                                  id_sabor=int(input("::\tID SABOR: ")),
-                                 id_tipo_embalagem=int(input("::\tID TIPO EMBALAGEM")),
+                                 id_tipo_embalagem=int(input("::\tID TIPO EMBALAGEM: ")),
                                  id_tipo_picole=int(input("::\tID TIPO PICOLE: ")))
-        ingrediente: Ingredientes = handler.execute(select(Ingredientes).where(Ingredientes.id == int(input("::\tID INGREDIENTE"))))
+        ingrediente: Ingredientes = handler.execute(select(Ingredientes).where(Ingredientes.id == int(input("::\tID INGREDIENTE: "))))
         picole.ingrediente.append(ingrediente)
 
         conservante: Conservantes = handler.execute(select(Conservantes).where(Conservantes.id == int(input("::\tID CONSERVANTE: "))))
@@ -126,34 +125,35 @@ def insert_picoles() -> None:
 
         handler.add(picole)
 
+
 if __name__ == '__main__':
 
     # 1 -- Tests Insert data `Aditivos Nutritivos` >> OK
-    #insert_aditivos_nutritivos()
+    insert_aditivos_nutritivos()
 
     # 2 -- Tests insertt Data `Sabores` >> OK
-    #insert_sabores()
+    insert_sabores()
 
-   # 3 -- Tests insert data `Tipos Embalagems` >> OK
-    #insert_tipos_embalagems()
+    # 3 -- Tests insert data `Tipos Embalagems` >> OK
+    insert_tipos_embalagems()
 
     # 4 -- Tests insert data `Tipos Picoles` >> OK
-    #insert_tipos_picole()
+    insert_tipos_picole()
 
     # 5 -- Tests insert data `Ingredientes` >> OK
-    #insert_ingredientes()
+    insert_ingredientes()
 
     # 6 -- Tests insert data `Conservantes` >> OK
-    #insert_conservantes()
+    insert_conservantes()
 
     # 7 -- Tests insert data `Revendedores` >> OK
-    #insert_revendedores()
+    insert_revendedores()
 
     # 8 -- Tests insert data `Lotes` >> ...
-    #insert_lotes()
+    insert_lotes()
 
     # 9 -- Insert data `Notas Fiscais`
-    #insert_notas_fiscais()
+    insert_notas_fiscais()
 
     # 10 -- Insert data `Picoles`
     insert_picoles()

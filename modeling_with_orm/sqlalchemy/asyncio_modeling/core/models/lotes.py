@@ -28,17 +28,14 @@ class Lotes(Base):
 
     date_create: Mapped[datetime] = mapped_column('date_create', default=datetime.now, index=True)
 
-    quantidade: Mapped[int] = mapped_column('quantidade', Integer, nullable=False)
+    quantidade: Mapped[int] = mapped_column("quantidade", BigInteger, nullable=False)
 
-    def __iter__(self) -> Iterable:
-        yield from {
-            "data_criacao": "%s" % data_para_string(self.date_create),
-            "id": "%d" % self.id,
-            "quantidade": "%d" % self.quantidade
-        }.items()
+    def __iter__(self):
+        yield from {"_class": self.__class__.__name__,
+                    "_attrs": str({attr: getattr(self, attr) for attr in self.__dict__.keys() if not attr.startswith("_sa_instance_state")})}.items()
 
     def __str__(self):
-        return json.dumps(dict(self), ensure_ascii=False)
+        return json.dumps(dict(self), ensure_ascii=False, indent=4)
 
     def __repr__(self):
         return self.__str__()

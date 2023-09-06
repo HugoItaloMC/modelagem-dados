@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="760a4292-72d9-4ee4-8e99-8875258b0efc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/__all_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/__all_models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/notas_fiscais.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/notas_fiscais.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/picoles.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/picoles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/revendedores.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/revendedores.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/weak_tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/weak_tables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/insert_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/insert_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/ingredientes.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/models/ingredientes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/populate_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/populate_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/utils/db_session.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../sql_model/sync_modeling/core/utils/db_session.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/models/aditivos_nutritivos.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/models/aditivos_nutritivos.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/models/notas_fiscais.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/models/notas_fiscais.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/models/tipo_picole.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/models/tipo_picole.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/models/picoles.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/models/picoles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/populate_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/populate_main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/select_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/select_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../asyncio_modeling/core/update_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../asyncio_modeling/core/update_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sync_modeling.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sync_modeling.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/insert_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/insert_main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/models/picoles.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/picoles.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/models/weak_tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/weak_tables.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +36,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/italo/Documentos/estudos/smooth/modelagem-dados/modeling_with_orm/sqlalchemy/sync_modeling&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MTConfigurable&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
   <component name="RunManager">

@@ -1,7 +1,10 @@
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload, join
+from sqlalchemy import ScalarResult
 
 import asyncio
-from typing import Dict
+import json
+from typing import List, Coroutine, AsyncIterable
 
 # Tables how objects
 from models.aditivos_nutritivos import AditivoNutritivo
@@ -23,81 +26,102 @@ async def select_aditivo_nutritivo() -> None:
     async with create_session() as handler:
         print("***\tInformacoes Tabela Aditivos Nutritivos\t***")
         #  Buscando
-        aditivo_nutritivo: AditivoNutritivo = await handler.scalar(select(AditivoNutritivo).where(AditivoNutritivo.id == int(input("::\tBuscar por ID: "))))
-        print(f"::\tID:\t{aditivo_nutritivo.id}\n::\tDATA CRIACAO:{data_para_string(aditivo_nutritivo.date_create)}\n::\tNOME:\t{aditivo_nutritivo.nome}\n::\tFORMULA QUIMICA:\t{aditivo_nutritivo.formula_quimica}")
+        print(" ".join(map(str, await handler.scalars(select(AditivoNutritivo).where(AditivoNutritivo.id == int(input("::\tBuscar por ID: ")))))))
 
 
 async def select_sabores() -> None:
     print("\n\n***\tInformacões Tabela Sabores\t***")
     async with create_session() as handler:
-        sabor: Sabores = await handler.scalar(select(Sabores).where(Sabores.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{sabor.id}\n::\tDATA CRIACÃO:\t{sabor.date_create}\n::\tNOME:\t{sabor.nome}")
+        print("\n".join(map(str, await handler.scalars(select(Sabores).order_by(Sabores.nome)))))
 
 
 async def select_tipos_embalagem() -> None:
     print("\n\n***Informacões da Tabela Tipos Embalagem\t***")
     async with create_session() as handler:
-        tipos_embalagem: TiposEmbalagem = await handler.scalar(select(TiposEmbalagem).where(TiposEmbalagem.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{tipos_embalagem.id}\n::\tDATA CRIACÃO:\t{tipos_embalagem.data_create}\n::\tNOME:\t{tipos_embalagem.nome}")
+        print("\n".join(map(str, await handler.scalars(select(TiposEmbalagem).where(TiposEmbalagem.id == int(input("::\tBuscar ID Tipos Embalagem\nID: ")))))))
 
 
 async def select_tipos_picole() -> None:
     print("\n\n***\tInformacões Tabela Tipos Picole\t***")
     async with create_session() as handler:
-        tipos_picole: TiposPicole = await handler.scalar(select(TiposPicole).where(TiposPicole.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{tipos_picole.id}\n::\tDATA CRIACÃO:\t{tipos_picole.date_create}\n::\tNOME:\t{tipos_picole.nome}")
+        tipo_picole: TiposPicole = await handler.scalar(select(TiposPicole).where(TiposPicole.id == int(input("::\tBuscar ID Tipo Picole\nID:\t"))))
+        print(tipo_picole)
+
 
 async def select_ingredientes() -> None:
     print("\n\n***\tinformacoes Tabela Ingredientes\t***")
     async with create_session() as handler:
-        ingredientes: Ingredientes = await handler.scalar(select(Ingredientes).where(Ingredientes.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{ingredientes.id}\n::\tDATA CRIACÃO:\t{ingredientes.date_create}\n::\tNOME:\t{ingredientes.nome}")
+        print(" ".join(map(str, await handler.scalar(select(Ingredientes).where(Ingredientes.id == int(input("::\tBuscar Por ID: ")))))))
 
 
 async def select_conservantes() -> None:
     print("\n\n***\tinformacoes Tabela Conservantes\t***")
     async with create_session() as handler:
-        conservantes: Conservantes = await handler.scalar(select(Conservantes).where(Conservantes.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{conservantes.id}\n::\tDATA CRIACÃO:\t{conservantes.date_create}\n::\tNOME:\t{conservantes.nome}\n::\tDESCRICÃO:\t{conservantes.descricao}")
+        print(" ".join(map(str, await handler.scalar(select(Conservantes).where(Conservantes.id == int(input("::\tBuscar Por ID: ")))))))
 
 
 async def select_revendedores() -> None:
     print("\n\n***\tinformacoes Tabela Revendedores\t***")
     async with create_session() as handler:
-        revendedor: Revendedores = await handler.scalar(select(Revendedores).where(Revendedores.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{revendedor.id}\n::\tDATA CRIACÃO:\t{revendedor.date_create}\n::\tCNPJ:\t{revendedor.cnpj}\n::\tRAZÃO SOCIAL:\t{revendedor.razao_social}\n::\tCONTATO:\t{revendedor.contato}")
+        print(" ".join(map(str, await handler.scalar(select(Revendedores).where(Revendedores.id == int(input("::\tBuscar Por ID: ")))))
+))
 
 
 async def select_lotes() -> None:
     print("\n\n***\tinformacoes Tabela Lotes\t***")
     async with create_session() as handler:
-        lote: Lotes = await handler.scalar(select(Lotes).where(Lotes.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{lote.id}\n::\tDATA CRIACÃO:\t{lote.date_create}\n::\tQUANTIDADE:\t{lote.quantidade}\n::\tTIPO PICOLE:\t{lote.tipos_picole.nome}\n::\tID TIPO PICOLE:\t{lote.id_tipos_picole}")
+        print("\n".join(map(repr, await handler.scalars(select(Lotes).select_from(join(Lotes, TiposPicole)).where(TiposPicole.id == int(input("::\tBuscar Lote por ID Tipo Picole\nID: ")))))))
 
 
 async def select_notas_fiscais() -> None:
     print("\n\n***\tinformacoes Tabela Notas Fiscais\t***")
-    async with create_session() as handler:
-        nota_fiscal: NotasFiscais = await handler.scalar(select(NotasFiscais).where(NotasFiscais.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{nota_fiscal.id}\n::\tDATA CRIACÃO:\t{nota_fiscal.date_create}\n::\tVALOR:\t{nota_fiscal.valor}\n::\tNÚMERO DE SÉRIE:\t{nota_fiscal.numero_serie}\n::\tDESCRICAO:\t{nota_fiscal.descricao}\n::\tREVENDEDOR:\t{nota_fiscal.revendedor.contato}\n")
-        for line in nota_fiscal.lotes:
-            print(f"::\tID LOTE:\t{line.id}\n::\tQUANTIDADE LOTE:\t{line.quantidade}")
+    async with (create_session() as handler):
+        nota_fiscal: ScalarResult[NotasFiscais] = await handler.scalars(select(NotasFiscais))
+        quantidade: int = int(input("::\tBuscar Nota Fiscal por Quantidade em Lote:\t"))
+        print(" ".join(map(str, [line for line in nota_fiscal.unique().all() if any(lote.quantidade == quantidade for lote in line.lotes)]
+)))
 
 
-async def select_picoles() -> None:
-    print("\n\n***\tinformacoes Tabela Picoles\t***")
-    async with create_session() as handler:
-        picole: Picoles = await handler.scalar(select(Picoles).where(Picoles.id == int(input("::\tBuscar Por ID: "))))
-        print(f"::\tID:\t{picole.id}\n::\tDATA CRIACÃO:\t{picole.date_create}\n::\tPRECO:\t{picole.preco}\n::\tID SABOR:\t{picole.id_sabor}\n::\tID TIPO EMBALAGEM:\t{picole.id_tipos_embalagem}\n::\tID TIPO PICOLE:\t{picole.id_tipos_picole}")
+async def select_picoles_complex() -> None:
+    print("\n\n***\tInformacoes de Tabela Picoles a partir de Relacionamentos\t***")
+    handler = create_session()
+    """
+      Para recuperarmos informacões de relacionamentos complexos `N=N`,  devemos  primeiramente  iterar sobre o atributo 
+    que representa  o  objeto  relacionado e assim aplicar os filtros de recuperacão que no caso  está sendo  comparacão  
+    entre: `objeto.id == input_id_objeto`
+    """
+    async with handler:
+        picoles: ScalarResult[Picoles] = await handler.scalars(select(Picoles))
 
-        for ingrediente in picole.ingrediente:
-            print(f"\n::\tINGREDIENTE:\t{ingrediente.nome}")
+        id_ingrediente: int = int(input("::\tBuscar Picole por ID Ingrediente\nID:\t"))
+        print("\n".join(map(repr, [line for line in picoles.unique().all() if any(ingrediente.id == id_ingrediente for ingrediente in line.ingrediente)])))
 
-        for conservante in picole.conservante:
-            print(f"\n::\tCONSERVANTE:\t{conservante.nome}\n::\tCONSERVANTE DESCRICAO:\t{conservante.descricao}")
+    async with handler:
+        picoles: ScalarResult[Picoles] = await handler.scalars(select(Picoles))
 
-        for aditivo_nutritivo in picole.aditivo_nutritivo:
-            print(f"\n::\tADITIVO NUTRITIVO:\t{aditivo_nutritivo.nome}\n::\tFORMULA QUIMICA ADITIVO:\t{aditivo_nutritivo.formula_quimica}")
+        id_conservante: int = int(input("::\tBuscar Picole por ID Conservante\nID:\t"))
+        print("\n".join(map(repr, [line for line in picoles.unique().all() if any(conservante.id == id_conservante for conservante in line.conservante)])))
+
+    async with handler:
+        picoles: ScalarResult[Picoles] = await handler.scalars(select(Picoles))
+        id_aditivo_nutritivo: int = int(input("::\tBuscar Picole por ID Aditivo Nutritivo\nID:\t"))
+        print("\n".join(map(repr, [line for line in picoles.unique().all() if any(aditivo_nutritivo.id == id_aditivo_nutritivo for aditivo_nutritivo in line.aditivo_nutritivo)])))
+
+    """
+        Em relacionamentos  em  que  temos  o objeto sendo representado como coluna em uma chave estrangeira, fica mais 
+    performático utilizar uma recuperacão utilizando operador `join`
+    """
+    async with handler:
+        picoles: ScalarResult[Picoles] = await handler.scalars(select(Picoles).select_from(join(Picoles, Sabores)).where(Sabores.id == int(input("::\tBuscar Picole por ID Sabores\nID:\t"))))
+        print(" ".join(map(repr, picoles.unique().all())))
+
+    async with handler:
+        picoles: ScalarResult[Picoles] = await handler.scalars(select(Picoles).select_from(join(Picoles, TiposEmbalagem)).where(TiposEmbalagem.id == int(input("::\tBuscar Picole por ID Tipo Embalagem\nID:\t"))))
+        print(" ".join(map(repr, picoles.unique().all())))
+
+    async with handler:
+        picoles: ScalarResult[Picoles] = await handler.scalars(select(Picoles).select_from(join(Picoles, TiposPicole)).where(TiposPicole.id == int(input("::\tBuscar Picole por ID Tipo Picole\nID:\t"))))
+        print(" ".join(map(repr, picoles.unique().all())))
 
 
 def select_main() -> None:
@@ -112,7 +136,7 @@ def select_main() -> None:
     #maker.run_until_complete(select_revendedores())
     #maker.run_until_complete(select_lotes())
     #maker.run_until_complete(select_notas_fiscais())
-    #maker.run_until_complete(select_picoles())
+    maker.run_until_complete(select_picoles_complex())
 
 
 if __name__ == '__main__':

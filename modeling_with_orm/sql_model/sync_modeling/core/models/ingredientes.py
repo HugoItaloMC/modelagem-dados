@@ -7,7 +7,6 @@ from typing import Optional, Iterable, Generator
 from utils.helper import data_para_string
 
 
-
 class Ingredientes(SQLModel, table=True):
 
     __tablename__: str = "ingredientes"

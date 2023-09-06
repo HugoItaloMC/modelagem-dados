@@ -1,10 +1,7 @@
-import sqlalchemy as sa
-from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.future.engine import Engine
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Session, create_engine as _create_engine
 from typing import Optional
 from pathlib import Path
-
 
 
 __engine: Optional[Engine] = None
@@ -25,15 +22,12 @@ def create_engine(sqlite: bool = False) -> Engine:
          #  Create Engine
 
         str_engine = f"sqlite+pysqlite:///{file_db}"
-        __engine = sa.create_engine(url=str_engine,
-                                    echo=False,
-                                    connect_args={"check_same_thread": False}  # the `sqlite` don't thread in system
-                                    )
+        __engine = _create_engine(url=str_engine,
+                                  echo=False,
+                                  connect_args={"check_same_thread": False})  # the `sqlite` don't thread in system
 
     else:  # Settings to `PostgreSql`
-        __engine = sa.create_engine(url="postgresql://postgres:Acesso93#@localhost:5432",
-                                    echo=False
-                                    )
+        __engine = _create_engine(url="postgresql://postgres:Acesso93#@localhost:5432", echo=False)
     return __engine
 
 
@@ -44,11 +38,7 @@ def create_session():
         # To `sqlite` db add parameter `sqlite=True`
         create_engine()
 
-    __session = sessionmaker(__engine,
-                             expire_on_commit=False,
-                             class_=Session)
-
-    session: Session = __session()
+    session: Session = Session(__engine)
     return session
 
 

@@ -1,13 +1,13 @@
 
 from sqlalchemy import Integer, BigInteger, DateTime, DECIMAL, ForeignKey, Column
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from datetime import datetime
 
 import json
 from typing import Iterable, List, Optional
 
 from utils.model_base import Base
-from models.weak_tables import (aditivo_nutritivo_picole, ingredientes_picoles, conservantes_picoles)
+from models.weak_tables import (AditivoNutritivoPicoles, IngredientesPicoles, ConservantesPicoles)
 
 from models.ingredientes import Ingredientes
 from models.conservantes import Conservantes
@@ -20,7 +20,7 @@ from models.tipos_embalagem import TiposEmbalagem
 class Picoles(Base):
 
     __tablename__: str = "picoles"
-    Column('id', BigInteger, autoincrement=True, nullable=False),
+    id: Mapped[BigInteger] = Column('id', BigInteger, autoincrement=True, nullable=False, primary_key=True)
     Column('preco', DECIMAL(8, 2), nullable=False)
 
     # ForeignKey's
@@ -34,16 +34,16 @@ class Picoles(Base):
     tipos_picole = relationship('TiposPicole', lazy='joined')
 
     # Complex relation
-    ingrediente: List[Ingredientes] = relationship('Ingrediente',
-                                                   secondary=ingredientes_picoles,
+    ingrediente: Mapped[List[Ingredientes]] = relationship('Ingrediente',
+                                                   secondary='ingredientes_picoles',
                                                    backref='ingredientes')
 
-    conservantes: List[Conservantes] = relationship('Conservantes',
-                                                    secondary=conservantes_picoles,
+    conservantes: Mapped[List[Conservantes]] = relationship('Conservantes',
+                                                    secondary='conservantes_picoles',
                                                     backref='conservantes')
 
-    aditivo_nutritivo: List[AditivoNutritivo] = relationship('AditivoNutritivo',
-                                                             secondary=aditivo_nutritivo_picole,
+    aditivo_nutritivo: Mapped[List[AditivoNutritivo]] = relationship('AditivoNutritivo',
+                                                             secondary='aditivo_nutritivo_picole',
                                                              backref='aditivo_nutritivo')
 
     def __iter__(self) -> Iterable:

@@ -2,11 +2,12 @@ from sqlmodel import SQLModel, Relationship, Field
 
 import json
 from datetime import datetime
-from typing import Iterable, Optional
+from typing import Iterable, Optional, List
 
 
 from utils.helper import data_para_string
 from models.tipo_picole import TiposPicole
+from models.weak_tables import LotesNotasFiscais
 
 
 class Lotes(SQLModel, table=True):
@@ -21,14 +22,15 @@ class Lotes(SQLModel, table=True):
     # Settings relationship
     id_tipos_picole: int = Field(default=None, foreign_key='tipos_picole.id')
     tipo_picole: TiposPicole = Relationship(sa_relationship_kwargs={'lazy': 'joined'})
+    nota_fiscal: List['NotasFiscais'] = Relationship(link_model=LotesNotasFiscais, sa_relationship_kwargs={"lazy": "dynamic", "viewonly": True}, back_populates='lote')
 
     def __iter__(self) -> Iterable:
         yield from {
             "date_create": "%s" % data_para_string(self.date_create),
-            "id": "%d" % int(self.id),
-            "quantidade": "%s" % self.cnpj,
-            "id_tipos_picole": "%d" % int(self.id_tipos_picole)
-        }.items()
+            "id": "%d" % self.id,
+            "quantidade": "%d" % self.quantidade,
+            "id_tipos_picole": "%d" % self.id_tipos_picole,
+            "tipos_picole": "%s" % " ".join(map(str, self.tipo_picole))}.items()
 
     def __str__(self):
         return json.dumps(dict(self),

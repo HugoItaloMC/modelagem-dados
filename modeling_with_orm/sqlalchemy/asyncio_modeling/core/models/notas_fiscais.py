@@ -35,3 +35,13 @@ class NotasFiscais(Base):
     revendedor: Mapped[List[Revendedores]] = relationship('Revendedores', lazy='joined', cascade='delete')
 
     lotes: Mapped[List[Lotes]] = relationship('Lotes', secondary=lotes_notas_fiscais, backref='lotes', lazy='joined')
+
+    def __iter__(self):
+        yield from {"_class": self.__class__.__name__,
+                    "_attrs": str({attr: getattr(self, attr) for attr in self.__dict__.keys() if not attr.startswith("_sa_instance_state")})}.items()
+
+    def __str__(self):
+        return json.dumps(dict(self), ensure_ascii=False, indent=True)
+
+    def __repr__(self):
+        return self.__str__()
